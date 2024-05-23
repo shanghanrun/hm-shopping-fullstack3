@@ -1,0 +1,144 @@
+const Order = require('../model/Order')
+const Product = require('../model/Product')
+const User = require('../model/User')
+const { randomStringGenerator } = require('../utils/randomStringGenerator')
+const productController = require('./productController')
+const cartController = require('./cartController')
+
+const orderController={}
+const PAGE_SIZE =5
+
+orderController.createOrder = async(req, res)=>{
+	try{
+		const userId = req.userId
+		const {shipTo, contact, totalPrice, items} = req.body;
+
+		// 재고확인 & 재고 업데이트
+		const insufficientStockItems = await productController.checkItemsStock(items)
+
+		// 재고가 충분하지 않은 아이템이 있으면 -> 에러
+		if(insufficientStockItems.length >0){
+			const errorMessage = insufficientStockItems.reduce((total, item)=> total += `${item.message} \n;`, '')
+			throw new Error(errorMessage)
+		}
+		const orderNum = randomStringGenerator()
+
+		const user = await User.findById(userId)
+		const email = user.email
+
+		const newOrder = new Order({
+			userId, email, shipTo, contact,totalPrice, items,
+			orderNum: orderNum,
+		})
+		await newOrder.save()
+		console.log('Order 생성됨')
+		//save후에 cart를 비워준다.
+		//await cartController.emptyCart() 그런데 바로 비우면 프론트엔드에서 getCart()하고, 화면구성할 때 에러가 나올 수 있다. 
+		// cart비우는 것은, 프론트엔드에서 필요할 때 요청하게 만든다.
+
+		return res.status(200).json({status:'ok', orderNum: orderNum})
+	}catch(e){
+		return res.status(400).json({status:'fail', error:e.message})
+	}
+}
+
+
+orderController.getOrderList=async(req, res)=>{
+	try{
+		const {page, orderNum} = req.query
+		const userId =  req.userId
+		console.log('다음 유저의 orderList검색: ', userId)
+
+		let cond ={}  // condition 객체
+		if (userId.level !== 'admin'){
+			cond = { userId: userId };
+		}
+
+		if (orderNum) {
+			cond.orderNum = { $regex: orderNum, $options: 'i' };
+		}
+		// const cond = orderNum? {
+		// 	orderNum:{$regex: orderNum, $options:'i'}
+		// 	} 
+		// 	:{}
+		console.log('cond : ', cond)
+		console.log('백엔드 page', page)
+
+		let query = Order.find(cond)
+		let response = {status:'success'}
+
+		if(page){
+			query.skip((page-1)*PAGE_SIZE).limit(PAGE_SIZE)
+			const totalItemNum = await Order2.find(cond).countDocuments()
+			const totalPages = Math.ceil(totalItemNum / PAGE_SIZE)
+			response.totalPageNum = totalPages
+		}
+
+		const orderList = await query.exec()
+		response.orderList = orderList
+		console.log('찾은 orderList', orderList)
+
+		res.status(200).json(response)
+	}catch(e){
+		res.status(400).json({status:'fail', error:e.message})
+	}
+}
+orderController.getAllUserOrderList=async(req, res)=>{
+	try{
+		const {page, orderNum} = req.query
+		const userId =  req.userId
+		console.log('다음 orderNum 검색: ', orderNum)
+
+		let cond ={}  // condition 객체
+		// if (userId.level !== 'admin'){
+		// 	cond = { userId: userId };
+		// }
+		if (orderNum) {
+			cond.orderNum = { $regex: orderNum, $options: 'i' };
+		}
+
+		let query = Order.find(cond)
+		let response = {status:'success'}
+
+		if(page){
+			query.skip((page-1)*PAGE_SIZE).limit(PAGE_SIZE)
+			const totalItemNum = await Order2.find(cond).countDocuments()
+			const totalPages = Math.ceil(totalItemNum / PAGE_SIZE)
+			response.totalPageNum = totalPages
+		}
+
+		const orderList = await query.exec()
+		const totalCount = await Order2.find().countDocuments()
+		console.log('totalCount :', totalCount)
+		response.data = orderList
+		response.totalCount = totalCount
+		console.log('찾은 orderList', orderList)
+
+		res.status(200).json(response)
+	}catch(e){
+		res.status(400).json({status:'fail', error:e.message})
+	}
+}
+
+orderController.updateOrder = async (req, res) => {
+    try {
+        const { orderId, newStatus } = req.body;
+        const updatedOrder = await Order.findOneAndUpdate(
+            { _id: orderId }, // 검색 조건
+            { status: newStatus }, // 수정 내용
+            { new: true } // 수정된 문서를 반환하도록 설정
+        );
+		console.log('업데이트된 order :', updatedOrder)
+        if (!updatedOrder) {
+            throw new Error("주문을 찾을 수 없습니다.")
+        }
+        // 수정된 주문을 클라이언트로 응답
+        res.status(200).json({status:'ok', updatedOrder: updatedOrder});
+    } catch (error) {
+        console.error("주문 업데이트 오류:", error);
+        res.status(500).json({ status:'fail', error: "주문을 업데이트하는 동안 오류가 발생했습니다." });
+    }
+};
+
+
+module.exports = orderController;
