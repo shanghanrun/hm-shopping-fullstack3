@@ -56,7 +56,7 @@ productController.batchCreateProducts = async(req, res) => {
 					const validJSON = convertToValidJSON(stockValue);
 					stock = JSON.parse(validJSON);
 				} catch (e) {
-					console.error(`Stock JSON parsing error at row ${rowNumber}: ${stockValue}`);
+					console.log(`Stock JSON parsing error at row ${rowNumber}: ${stockValue}`);
 					return; // 이 행을 건너뛰거나 에러 처리
 				}
 

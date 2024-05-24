@@ -7,7 +7,6 @@ const LOCAL_BACKEND = process.env.REACT_APP_LOCAL_BACKEND;
 const api = axios.create({
   baseURL: LOCAL_BACKEND,
   headers: {
-    "Content-Type": "application/json",
     authorization: `Bearer ${sessionStorage.getItem("token")}`,
   },
 });

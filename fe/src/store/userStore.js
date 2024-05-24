@@ -3,7 +3,7 @@ import api from '../utils/api'
 import uiStore from './uiStore'
 // import cartStore from './cartStore' 잠시 주석처리
 
-const userStore =create((set)=>({
+const userStore =create((set,get)=>({
 	user:null,
 	error:'',
 	// loading:true,
@@ -18,7 +18,7 @@ const userStore =create((set)=>({
 			const u = await resp.data.user
 			set({user: u})
 		} catch(e){
-			console.log('e.error:', e.error)
+			console.log('e.message:', e.message)
 			// set({error:e.message}) 이걸 안해야 Login페이지에 쓸데없는 에러메시지가 안나온다.
 			set({error: ''})
 			// this.logout()  zustand this사용 못한다.
@@ -39,9 +39,9 @@ const userStore =create((set)=>({
 			set({user: u })
 			sessionStorage.setItem('token',t)
 		} catch(e){
-			console.log('e.error:', e.error)
-			set({error: e.error})
-			uiStore.getState().showToastMessage(e.error, 'error');
+			console.log('e.message:', e.message)
+			set({error: e.message})
+			uiStore.getState().showToastMessage(e.message, 'error');
 		}
 	},
 	// logout:()=> {   잠시 주석처리
@@ -58,9 +58,9 @@ const userStore =create((set)=>({
 			set({user: u })
 			sessionStorage.setItem('token',t)
 		}catch(e){
-			console.log('e.error:', e.error)
-			set({error: e.error})
-			uiStore.getState().showToastMessage(e.error, 'error');
+			console.log('e.message:', e.message)
+			set({error: e.message})
+			uiStore.getState().showToastMessage(e.message, 'error');
 		}
 	},
 	registerUser: async({name,email,password}, navigate, showToastMessage)=>{
@@ -74,7 +74,7 @@ const userStore =create((set)=>({
 			navigate('/login')
 
 		}catch(e){
-			console.log(e.error)
+			console.log(e.message)
 			showToastMessage('회원가입실패','error')
 		}
 	},

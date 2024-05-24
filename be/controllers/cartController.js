@@ -11,7 +11,8 @@ cartController.createCartItem = async(req, res)=>{
 		const {productId, size} = req.body;
 		const userId = req.userId
 		//중복을 방지하기 위해, 유저정보로 카트찾기.
-		const cart = await Cart.findById(userId)
+		// const cart = await Cart.findById(userId) 틀렸다. Cart에서 id는 cartId이다.
+		const cart = await Cart.findOne({userId})
 		const product = await Product.findById(productId)
 		if(cart){
 			const existItem = cart.items.find((item)=>item.productId.equals(productId) && item.size ===size)

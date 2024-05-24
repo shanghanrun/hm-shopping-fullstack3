@@ -3,7 +3,7 @@ import api from '../utils/api'
 import uiStore from './uiStore'
 import cartStore from './cartStore'
 
-const orderStore =create((set, state)=>({
+const orderStore =create((set, get)=>({
 	totalPrice:0,
 	ship:{},
 	payment:{},
@@ -28,8 +28,8 @@ const orderStore =create((set, state)=>({
 			// awa)it state.getOrderList2(); //orderList 갱신하려 하지만..안된다.
 
 		}catch(e){
-			console.log(e.error)
-			uiStore.getState().showToastMessage(e.error, 'error');
+			console.log(e.message)
+			uiStore.getState().showToastMessage(e.message, 'error');
 		}
 	},
 
@@ -48,8 +48,8 @@ const orderStore =create((set, state)=>({
 			navigate('/payment/success')
 			
 		}catch(e){
-			console.log(e.error)
-			uiStore.getState().showToastMessage(e.error, 'error'); 
+			console.log(e.message)
+			uiStore.getState().showToastMessage(e.message, 'error'); 
 		}
 	},
 
@@ -68,8 +68,8 @@ const orderStore =create((set, state)=>({
 				totalPageNum: resp.data.totalPageNum
 			})	
 		}catch(e){
-			console.log('e.error:', e.error)
-			set({error: e.error})
+			console.log('e.message:', e.message)
+			set({error: e.message})
 		}
 	},
 	getAllUserOrderList:async(searchQuery)=>{  // admin에서 필요한 것
@@ -85,8 +85,8 @@ const orderStore =create((set, state)=>({
 				totalCount: resp.data.totalCount
 			})	
 		}catch(e){
-			console.log('e.error:', e.error)
-			set({error: e.error})
+			console.log('e.message:', e.message)
+			set({error: e.message})
 		}
 	}
 }))

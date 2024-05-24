@@ -136,7 +136,7 @@ orderController.updateOrder = async (req, res) => {
         // 수정된 주문을 클라이언트로 응답
         res.status(200).json({status:'ok', updatedOrder: updatedOrder});
     } catch (error) {
-        console.error("주문 업데이트 오류:", error);
+        console.log("주문 업데이트 오류:", error);
         res.status(500).json({ status:'fail', error: "주문을 업데이트하는 동안 오류가 발생했습니다." });
     }
 };
