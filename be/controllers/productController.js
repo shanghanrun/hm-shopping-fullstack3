@@ -151,7 +151,8 @@ productController.deleteProduct =async(req, res)=>{
     const id = req.params.id;
     const product = await Product.findByIdAndUpdate(
       { _id: id },
-      { isDeleted: true }
+      { isDeleted: true },
+	  { new: true} //이것 있어야 업데이트된 문서 반환. 없으면 기존 문서를 만환한다.
     );
     if (!product) throw new Error("No item found");
     res.status(200).json({ status: "success", message:'A item was deleted successfully' });

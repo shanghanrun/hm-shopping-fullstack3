@@ -32,8 +32,9 @@ orderController.createOrder = async(req, res)=>{
 		})
 		await newOrder.save()
 		console.log('Order 생성됨')
-		//save후에 cart를 비워준다.
-		//await cartController.emptyCart() 그런데 바로 비우면 프론트엔드에서 getCart()하고, 화면구성할 때 에러가 나올 수 있다. 
+		//save후에 cart를 비워준다. 그런데 cart는 바로 비울 필요가 없다.
+		//await cartController.emptyCart() 해서 바로 카트를 비우면 
+		// 프론트엔드에서 getCart()하고, 화면구성할 때 에러가 나올 수 있다. 
 		// cart비우는 것은, 프론트엔드에서 필요할 때 요청하게 만든다.
 
 		return res.status(200).json({status:'ok', orderNum: orderNum})
@@ -49,12 +50,12 @@ orderController.getOrderList=async(req, res)=>{
 		const userId =  req.userId
 		console.log('다음 유저의 orderList검색: ', userId)
 
-		let cond ={}  // condition 객체
+		let cond ={isDeleted:false}  // condition 객체, 삭제 안된 order들
 		if (userId.level !== 'admin'){
 			cond = { userId: userId };
 		}
 
-		if (orderNum) {
+		if (orderNum) {  //주문번호의 일부만 있어도 검색가능
 			cond.orderNum = { $regex: orderNum, $options: 'i' };
 		}
 		// const cond = orderNum? {
@@ -69,7 +70,7 @@ orderController.getOrderList=async(req, res)=>{
 
 		if(page){
 			query.skip((page-1)*PAGE_SIZE).limit(PAGE_SIZE)
-			const totalItemNum = await Order2.find(cond).countDocuments()
+			const totalItemNum = await Order.find(cond).countDocuments()
 			const totalPages = Math.ceil(totalItemNum / PAGE_SIZE)
 			response.totalPageNum = totalPages
 		}
@@ -86,10 +87,10 @@ orderController.getOrderList=async(req, res)=>{
 orderController.getAllUserOrderList=async(req, res)=>{
 	try{
 		const {page, orderNum} = req.query
-		const userId =  req.userId
+		// const userId =  req.userId  // admin이 검색하는 거라, 누구의 order인지 구별필요없다.
 		console.log('다음 orderNum 검색: ', orderNum)
 
-		let cond ={}  // condition 객체
+		let cond ={isDeleted:false}  // condition 객체
 		// if (userId.level !== 'admin'){
 		// 	cond = { userId: userId };
 		// }
@@ -102,13 +103,13 @@ orderController.getAllUserOrderList=async(req, res)=>{
 
 		if(page){
 			query.skip((page-1)*PAGE_SIZE).limit(PAGE_SIZE)
-			const totalItemNum = await Order2.find(cond).countDocuments()
+			const totalItemNum = await Order.find(cond).countDocuments()
 			const totalPages = Math.ceil(totalItemNum / PAGE_SIZE)
 			response.totalPageNum = totalPages
 		}
 
 		const orderList = await query.exec()
-		const totalCount = await Order2.find().countDocuments()
+		const totalCount = await Order.find().countDocuments()
 		console.log('totalCount :', totalCount)
 		response.data = orderList
 		response.totalCount = totalCount
@@ -140,5 +141,23 @@ orderController.updateOrder = async (req, res) => {
     }
 };
 
+orderController.deleteOrder = async(req, res)=>{
+	try{
+		const orderId = req.params.id
+		const updatedOrder = await Order.findByIdAndUpdate(
+			{_id:orderId},
+			{isDeleted: true},
+			{new: true}
+		)
+		console.log('삭제된 order :', updatedOrder)
+        if (!updatedOrder) {
+            throw new Error("삭제 작업에 문제가 발생했습니다.")
+        }
+       
+        res.status(200).json({status:'ok', message: '삭제성공!'});
+	}catch(e){
+        res.status(500).json({ status:'fail', error: e.message });
+	}
+}
 
 module.exports = orderController;

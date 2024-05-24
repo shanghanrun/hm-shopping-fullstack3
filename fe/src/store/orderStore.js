@@ -13,16 +13,13 @@ const orderStore =create((set, state)=>({
 	totalPageNum:1,
 	allUserOrderList:[],
 	totalCount:1,
-	itemsList:[],
-	nameList:[],
-	imageList:[],
 	setTotalPrice:(val)=>set({totalPrice: val}),
 	setShip:(val)=>set({ship: val}),
 	setPayment:(val)=>set({payment: val}),
 	setSelectedOrder:(orderValue)=> set({selectedOrder: orderValue}),
-	updateOrder2: async(orderId, newStatus) => {
+	updateOrder: async(orderId, newStatus) => {
 		try{
-			const resp = await api.put('/order/2', {orderId, newStatus})
+			const resp = await api.put('/order', {orderId, newStatus})
 			if(resp.status !==200){
 				throw new Error(resp.error)
 			}
@@ -37,24 +34,6 @@ const orderStore =create((set, state)=>({
 	},
 
 	addOrder:(val)=>set({orderList:{...val}}),
-	// createOrder:async(data, navigate)=>{
-	// 	try{
-	// 		const resp = await api.post('/order', data)
-	// 		if(resp.status !==200){
-	// 			throw new Error(resp.error)
-	// 		}
-	// 		console.log('오더넘버:',resp.data.orderNum)
-	// 		set({orderNum: resp.data.orderNum})
-	// 		await cartStore.getState().emptyCart()
-	// 		// console.log('비우기 성공')
-	// 		//성공메시지는 생략하고, 결제성공 페이지로 이동
-	// 		navigate('/payment/success')
-			
-	// 	}catch(e){
-	// 		console.log(e.error)
-	// 		uiStore.getState().showToastMessage(e.error, 'error'); 
-	// 	}
-	// },
 	createOrder:async(data, navigate)=>{
 		try{
 			const resp = await api.post('/order', data)
@@ -74,11 +53,11 @@ const orderStore =create((set, state)=>({
 		}
 	},
 
-	getOrderList2:async(searchQuery)=>{
+	getOrderList:async(searchQuery)=>{
 		// if(searchQuery.orderNum ===""){
 		// 	delete searchQuery.orderNum
 		// }
-		console.log('getOrderList2 서치쿼리', searchQuery)
+		console.log('getOrderList 서치쿼리', searchQuery)
 		try{
 			const resp = await api.get('/order',{params:searchQuery})
 			if(resp.status !==200) throw new Error(resp.error)
@@ -93,7 +72,7 @@ const orderStore =create((set, state)=>({
 			set({error: e.error})
 		}
 	},
-	getAllUserOrderList:async(searchQuery)=>{
+	getAllUserOrderList:async(searchQuery)=>{  // admin에서 필요한 것
 		try{
 			const resp = await api.get('/order/all',{params:searchQuery})
 			if(resp.status !==200) throw new Error(resp.error)
