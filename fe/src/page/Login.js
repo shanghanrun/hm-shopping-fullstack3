@@ -13,6 +13,7 @@ const Login = () => {
 
   const login= async(event)=>{
 		event.preventDefault();
+    console.log('email, password:',email,password)
 		await loginWithEmail({email,password})	
 	}
   const handleGoogleLogin = async (googleData) => {
