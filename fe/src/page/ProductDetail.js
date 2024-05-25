@@ -47,7 +47,7 @@ const ProductDetail = () => {
       <Row>
         <Col sm={6}>
           <img
-            src={selectedProduct?.image} className="w-100" alt="image" />
+            src={selectedProduct?.image} className="w-100" alt="" />
         </Col>
         <Col className="product-info-area" sm={6}>
           <div className="product-info">{selectedProduct?.name}</div>

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
-import OrderReceipt from "../component/OrderReceipt";
-import PaymentForm from "../component/PaymentForm";
+import OrderReceipt from "../components/OrderReceipt";
+import PaymentForm from "../components/PaymentForm";
 import "../style/paymentPage.style.css";
 import { useEffect } from "react";
 import { useNavigate } from "react-router";

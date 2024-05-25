@@ -1,7 +1,7 @@
 const express = require('express')
 const orderRouter = express.Router()
-const orderController =require('../controller/orderController')
-const authController = require('../controller/authController')
+const orderController =require('../controllers/orderController')
+const authController = require('../controllers/authController')
 
 orderRouter.post('/', authController.authenticate, orderController.createOrder)
 

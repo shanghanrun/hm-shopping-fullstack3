@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
-import ProductCard from "../component/ProductCard";
+import ProductCard from "../components/ProductCard";
 import { Row, Col, Container } from "react-bootstrap";
 import productStore from '../store/productStore';
 import orderStore from '../store/orderStore'
 import uiStore from '../store/uiStore'
-import Popup from "../component/Popup";
+import Popup from "../components/Popup";
 
 
 const ProductAll = () => {

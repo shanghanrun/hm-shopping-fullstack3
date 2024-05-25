@@ -4,7 +4,7 @@ const Product = require('./Product')
 
 const Schema = mongoose.Schema
 const cartSchema = Schema({
-	userId:{type:Schema.types.ObjectId, ref:User},//혹은 mongoose.ObjectId
+	userId:{type:mongoose.ObjectId, ref:User},//혹은 mongoose.ObjectId
 	items:[{
 		productId:{type:mongoose.ObjectId, ref:Product},
 		name:{type: String, default:''},  //내가 추가한 것

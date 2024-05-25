@@ -5,7 +5,7 @@ const secretKey = process.env.JWT_SECRET_KEY
 
 
 // api요청으로부터 토큰값 받아서 user정보 인증 -> req.userId 건내기
-const authController.authenticate=async(req, res, next)=>{
+authController.authenticate=async(req, res, next)=>{
 	try{
 		const tokenString = req.headers.authorization
 		if(!tokenString){

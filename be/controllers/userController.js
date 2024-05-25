@@ -93,3 +93,5 @@ userController.getUser=async(req, res)=>{
 		res.status(400).json({status:'fail', error:e.message})
 	}
 }
+
+module.exports = userController;

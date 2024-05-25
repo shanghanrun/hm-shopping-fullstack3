@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Container, Button } from "react-bootstrap";
-import SearchBox from "../component/SearchBox";
+import SearchBox from "../components/SearchBox";
 import productStore from '../store/productStore'
 import uiStore from '../store/uiStore'
-import NewItemDialog from "../component/NewItemDialog";
+import NewItemDialog from "../components/NewItemDialog";
 import ReactPaginate from "react-paginate";
 import { useSearchParams, useNavigate } from "react-router-dom";
-import ProductTable from "../component/ProductTable";
+import ProductTable from "../components/ProductTable";
 import orderStore from '../store/orderStore'
 
 const AdminProduct = () => {

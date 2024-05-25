@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import { useLocation } from "react-router";
 import { Col, Row } from "react-bootstrap";
-import Sidebar from "../component/Sidebar";
-import Navbar from "../component/Navbar";
+import Sidebar from "../components/Sidebar";
+import Navbar from "../components/Navbar";
 import userStore from '../store/userStore'
-import ToastMessage from "../component/ToastMessage";
+import ToastMessage from "../components/ToastMessage";
 import uiStore from "../store/uiStore";
 
 const AppLayout = ({ children }) => {
