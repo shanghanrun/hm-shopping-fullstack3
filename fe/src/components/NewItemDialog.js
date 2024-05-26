@@ -264,7 +264,7 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
                     </option>
                     {SIZE.map((size, index) => (
                       <option
-                        inValid={true}
+                        invalid="true"
                         value={size.toLowerCase()}
                         disabled={stock.some(
                           (item) => item[0] === size.toLowerCase()
