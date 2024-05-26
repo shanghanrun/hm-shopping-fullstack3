@@ -1,7 +1,7 @@
 import {create} from 'zustand'
 import api from '../utils/api'
 import uiStore from './uiStore'
-// import cartStore from './cartStore' 잠시 주석처리
+import cartStore from './cartStore' 
 
 const userStore =create((set,get)=>({
 	user:null,
@@ -44,11 +44,11 @@ const userStore =create((set,get)=>({
 			uiStore.getState().showToastMessage(e.message, 'error');
 		}
 	},
-	// logout:()=> {   잠시 주석처리
-	// 	sessionStorage.clear()
-	// 	set({user:null})
-	// 	cartStore.getState().zeroCartCount()
-	// },
+	logout:()=> {   
+		sessionStorage.clear()
+		set({user:null})
+		cartStore.getState().zeroCartCount()
+	},
 	loginWithGoogle: async (token)=>{
 		try{
 			const resp = await api.post('/user/google', {token})
