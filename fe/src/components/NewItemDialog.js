@@ -215,15 +215,16 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
             value={chosungInput}
             onChange={handleInputChange}
           />
+          <ListGroup horizontal>
+          {chosung.map((chosungEl, index) => (
+              <ListGroup.Item style={{width:'100px'}} key={index}>{chosungEl}</ListGroup.Item>
+          ))}
+        </ListGroup>
           <Button size="sm" onClick={addChosung} className="mt-2">
             Add +
           </Button>
         </Form.Group>
-        <ListGroup>
-          {chosung.map((chosungEl, index) => (
-            <ListGroup.Item key={index}>{chosungEl}</ListGroup.Item>
-          ))}
-        </ListGroup>
+        
 
 
         <Form.Group className="mb-3" controlId="description">

@@ -3,11 +3,9 @@ import { Container, Form, Button, Alert } from "react-bootstrap";
 import { useNavigate } from "react-router";
 import "../style/register.style.css";
 import userStore from '../store/userStore'
-import uiStore from '../store/uiStore'
 
 const RegisterPage = () => {
   const {user, error, registerUser} = userStore()
-  const {showToastMessage}= uiStore()
   const [formData, setFormData] = useState({
     email: "",
     name: "",
@@ -35,21 +33,27 @@ const RegisterPage = () => {
     // FormData에 있는 값을 가지고 백엔드로 넘겨주기
     setPasswordError('')
     setPolicyError(false)
-    await registerUser({name, email,password}, navigate,showToastMessage)
+    await registerUser({name, email,password}, navigate)
     //성공후 로그인 페이지로 넘어가기
     // navigate('/login')
   };
 
   const handleChange = (event) => {
-    event.preventDefault();
     // 값을 읽어서 FormData에 넣어주기
-    const {id, value, checked} = event.target
-    if(id ==='policy'){
-      setFormData({...formData, [id]: checked})  //checked값을 넣어준다.
-    } else{
-      setFormData({...formData, [id]: value}) //각각의 필드가 들어온 것을 펼치고, 다시 추가
-    // 변수값을 필드로 할 경우에는 [id] 형식으로 한다.
-    }
+    const {id, value, checked, type} = event.target
+    // 아래 방식도 괜찮은데, 더 아래 방식이 더 낫다.
+    // if(id ==='policy'){
+    //   setFormData({...formData, [id]: checked})  //checked값을 넣어준다.
+    //   console.log('policy checked: 단 변화되기 전의 값은 ', formData.policy)
+    // } else{
+    //   setFormData({...formData, [id]: value}) //각각의 필드가 들어온 것을 펼치고, 다시 추가
+    // // 변수값을 필드로 할 경우에는 [id] 형식으로 한다.
+
+    // 더 나은 방식 (type까지 추가)
+    setFormData( (prevFormData)=>({
+      ...prevFormData,
+      [id]: (type ==='checkbox')? checked : value
+    }))
   };
 
   return (
@@ -113,6 +117,7 @@ const RegisterPage = () => {
             id="policy"
             onChange={handleChange}
             isInvalid={policyError}
+            checked={formData.policy}
           />
         </Form.Group>
         <Button variant="danger" type="submit">

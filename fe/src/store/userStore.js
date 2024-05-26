@@ -10,6 +10,10 @@ const userStore =create((set,get)=>({
 	setError:(val)=>set({error:val}),
 	loginWithToken: async ()=> {
 		// const token= sessionStorage.getItem('token') 이것 필요없다. api에서 알아서 해더에 넣도록 설정해 두었다.
+		//그럼에도 불구하고, token값을 불러와서 token이 없을 경우에는 불필요한 백엔드 요청을 안하도록 하는 것이 좋다.
+		const token = sessionStorage.getItem('token')
+		if(!token) return;
+
 		try{
 			const resp = await api.get('/user/me')
 			if(resp.status !==200){
@@ -63,19 +67,19 @@ const userStore =create((set,get)=>({
 			uiStore.getState().showToastMessage(e.message, 'error');
 		}
 	},
-	registerUser: async({name,email,password}, navigate, showToastMessage)=>{
+	registerUser: async({name,email,password}, navigate)=>{
 		try{
 			const resp = await api.post('/user', {email,password,name})
 			if(resp.status !==200) throw new Error(resp.error)
-			console.log('회원등록 성공', resp.data.data)
-			set({user: resp.data.data})
+			console.log('회원등록 성공')
+			// set({user: resp.data.data})
 		
-			await showToastMessage('회원가입을 완료했습니다.', 'success')
+			uiStore.getState().showToastMessage('회원가입을 완료했습니다.', 'success')
 			navigate('/login')
 
 		}catch(e){
 			console.log(e.message)
-			showToastMessage('회원가입실패','error')
+			uiStore.getState().showToastMessage('회원가입실패','error')
 		}
 	},
 
