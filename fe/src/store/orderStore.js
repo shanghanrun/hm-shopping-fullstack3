@@ -25,7 +25,6 @@ const orderStore =create((set, get)=>({
 			}
 			console.log('업데이트되어 프론트로 온 order:', resp.data.updatedOrder)
 			set({selectedOrder: resp.data.updatedOrder})
-			// awa)it state.getOrderList2(); //orderList 갱신하려 하지만..안된다.
 
 		}catch(e){
 			console.log(e.message)

@@ -17,22 +17,22 @@ productController.createProduct = async(req, res)=>{
 		return res.status(400).json({status:'fail', error:e.message})
 	}
 }
-productController.batchCreateProducts = async(req, res) => {
-	console.log('batch시작')
+productController.batchCreateProducts = async (req, res) => {
+    console.log('batch시작');
     try {
-		function convertToValidJSON(input) {   // "쌍따옴표 넣어주기"
+        function convertToValidJSON(input) {   // "쌍따옴표 넣어주기"
 			const corrected = input.replace(/(\w+):/g, '"$1":').replace(/'/g, '"');
 			return corrected;
 		}
 
         const file = req.file;
-		console.log('file :', file)
+        console.log('백엔드로 받은 excel file :', file);
         if (!file) {
             return res.status(400).json({ status: 'fail', error: '파일이 제공되지 않았습니다.' });
         }
 
         const workbook = new ExcelJS.Workbook();
-        await workbook.xlsx.readFile(file.path); // file.buffer를 안사용
+        await workbook.xlsx.readFile(file.path);
 
         const worksheet = workbook.getWorksheet(1);
         const createdProducts = [];
@@ -41,26 +41,27 @@ productController.batchCreateProducts = async(req, res) => {
             if (rowNumber > 1) { // 첫 번째 행은 헤더로 가정
                 const sku = row.getCell(1).value;
                 const name = row.getCell(2).value;
-				//초성칸을 추가한다.
-				const chosung = row.getCell(3).value;
+                const chosung = row.getCell(3).value;
                 const image = row.getCell(4).value;
-				const description = row.getCell(5).value;
-				const price = parseInt(row.getCell(6).value); 
-				const status = row.getCell(7).value;
-                const category = row.getCell(8).value.split(',').map(item => item.trim())
-                const stockValue = row.getCell(9).value;
-                const isDeleted = row.getCell(10).value === 'TRUE';
+                const description = row.getCell(5).value;
+                const price = parseInt(row.getCell(6).value); 
+                const status = row.getCell(7).value;
+				const categoryRaw = row.getCell(8).value
+				const category = convertToValidJSON(categoryRaw.replace(/[\[\]]/g, '')).split(',').map(item => item.trim());
+                
 
-				let stock;
-				try {
-					const validJSON = convertToValidJSON(stockValue);
-					stock = JSON.parse(validJSON);
-				} catch (e) {
-					console.log(`Stock JSON parsing error at row ${rowNumber}: ${stockValue}`);
-					return; // 이 행을 건너뛰거나 에러 처리
-				}
+                let stock;
+                try {
+                    const stockValue = row.getCell(9).value;
+                    const validJSON = convertToValidJSON(stockValue);
+                    stock = JSON.parse(validJSON);
+                } catch (e) {
+                    console.log(`Stock JSON parsing error at row ${rowNumber}: ${stockValue}`);
+                    return; // 이 행을 건너뛰거나 에러 처리
+                }
 
-                const newProduct = new Product({ sku, name, chosung, image, category, description, stock, price, status, isDeleted });
+                const newProduct = new Product({ sku, name, chosung, image, category, description, stock, price });
+                // status 안 넣으면 'active'이다. isDeleted도 안넣어도 된다.
                 await newProduct.save();
                 createdProducts.push(newProduct);
             }

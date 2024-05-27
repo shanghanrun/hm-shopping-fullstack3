@@ -38,7 +38,7 @@ const productStore =create((set,get)=>({
 			console.log('list :', list)
 
 			set({
-				productList: list,    	initialProductList:[...list]})	
+				productList: [...list],    	initialProductList:[...list]})	
 		}catch(e){
 			console.log('e.message:', e.message)
 			set({error: e.message})

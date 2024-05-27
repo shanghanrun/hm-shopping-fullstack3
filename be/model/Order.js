@@ -27,7 +27,6 @@ orderSchema.methods.toJSON =function(){
 	const obj = this._doc
 	delete obj.__v
 	delete obj.createdAt
-	delete obj.updatedAt
 	return obj
 }
 

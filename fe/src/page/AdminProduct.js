@@ -10,7 +10,7 @@ import ProductTable from "../components/ProductTable";
 import orderStore from '../store/orderStore'
 
 const AdminProduct = () => {
-  const {productList, getProductList, totalPage, setSelectedProduct, deleteProduct, totalProductCount, selectedProduct, batchCreateProducts} = productStore()
+  const {productList, getProductList, totalPage, setSelectedProduct, deleteProduct, totalProductCount, selectedProduct, batchCreateProducts, productUpdated} = productStore()
   const {getAllUserOrderList} = orderStore()
   const {showPopup} = uiStore()
   const navigate = useNavigate();
@@ -58,7 +58,7 @@ const AdminProduct = () => {
     // navigate("?" + urlQuery)    
     const searchParamsString = new URLSearchParams(searchQuery).toString();
     navigate("?" + searchParamsString )    
-  }, [searchQuery]);
+  }, [searchQuery, productUpdated]);
 
   const deleteItem = async (id) => {
     //아이템 삭제하가ㅣ
@@ -99,9 +99,10 @@ const AdminProduct = () => {
     console.log('selectedFile :', selectedFile)
 
     const formData = new FormData();
+    console.log('selectedFile :', selectedFile)
     formData.append('file', selectedFile);
     for (let [key, value] of formData.entries()) {
-    console.log('formData: ', key, value);
+    console.log('store로 전송하는 formData: ', key, value);
 }
     batchCreateProducts(formData, navigate)
   };
