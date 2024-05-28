@@ -24,17 +24,12 @@ const Navbar = ({ user }) => {
   const {cartCount, getCart} = cartStore()
  
 	const {logout} = userStore()
-  const [query, setQuery] = useSearchParams()
   const [searchQuery, setSearchQuery] =useState({
-    page: query.get('page') || '',
-    //productAll 페이지는 페이지네이션 없이 모두 보이게
-    name: query.get('name') || '',
-  })
+    page: '', name: ''}) //productAll 페이지는 페이지네이션 없이 모두 보이게
+    //다른 곳은 page: 1을 디폴트로 해서 첫페이지만 보이게 한다.
+    // page가 null이면 백엔드에서 모든 페이지정보를 보내게 만든다.
   const [keyword, setKeyword] = useState('')
-
-
   const isMobile = window.navigator.userAgent.indexOf("Mobile") !== -1;
-  // let isMobile = false
   const [showSearchBox, setShowSearchBox] = useState(false);
   const menuList = [
     "여성",
@@ -50,14 +45,12 @@ const Navbar = ({ user }) => {
 
   const onCheckEnter = async (event) => {
     if (event.key === "Enter") {
-
-      query.set('page', searchQuery.page)
       if(searchQuery.name ===''){
         delete searchQuery.name
-      } else{
-        query.set('name', searchQuery.name)
-      }
-      setSearchQuery({...searchQuery, name: event.target.value})
+      } 
+      setSearchQuery({...searchQuery, name: keyword})
+      //이렇게 새로운 객체를 만들어 넣어야 state값이 변화되고,
+      // 아래 useEffect의 디펜던시리스트의 searchQuery가 의미가 있어 진다.
     }
     setKeyword('')
   };
@@ -75,14 +68,16 @@ const Navbar = ({ user }) => {
     if(searchQuery.name === ''){
       delete searchQuery.name;
     }
-    
+    if(searchQuery.page ===''){
+      delete searchQuery.page
+    }
     const searchParamsString = new URLSearchParams(searchQuery).toString();
     navigate("?" + searchParamsString )
   },[searchQuery, cartCount])
   
   return (
     <div>
-      {showSearchBox && (
+      {/* {showSearchBox && (
         <div className="display-space-between mobile-search-box w-100">
           <div className="search display-space-between w-100">
             <div style={{zIndex:'2'}}>
@@ -101,7 +96,7 @@ const Navbar = ({ user }) => {
             </button>
           </div>
         </div>
-      )}
+      )} */}
       <div className="side-menu" style={{ width: width }}>
         <button className="closebtn" onClick={() => setWidth(0)}>
           &times;
@@ -190,8 +185,8 @@ const Navbar = ({ user }) => {
             <input
               type="text"
               placeholder="제품검색"
-              onKeyPress={onCheckEnter}
-              onChange={(e)=>setKeyword(e.target.value)}
+              onKeyDown={onCheckEnter}
+              onChange={(e)=>{console.log(e.target.value); setKeyword(e.target.value)}}
               value={keyword}
             />
           </div>

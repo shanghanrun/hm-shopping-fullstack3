@@ -96,7 +96,10 @@ productController.getProductList=async(req, res)=>{
 		let response = {status:"success"}  // response 전용객체를 만듬
 
 		if(page){  
-		// 항상 적어도 1이 들어온다. 그래서 if(page)가 필요 없을 수 있다..
+		// 보통은 1이 들어온다. 그러나 프론트앤드에서 productAll페이지는
+		// 모든 상품을 보여주기 위해 page null 값을 보낸다.
+		// 그래서 page null이면 아래의 제약사항이 없으므로, 모든 리스트를 반환한다.
+	
     		const limit = PAGE_SIZE; // 한 페이지에 보여줄 문서의 수
     		const skip = (page - 1) * PAGE_SIZE;
 		

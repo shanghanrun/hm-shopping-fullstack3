@@ -284,3 +284,9 @@ body{
     height: 34vh;
     padding: 30px 20px;
 }
+
+
+.page-item{
+  background: pink;
+  border: 1px solid blue
+}

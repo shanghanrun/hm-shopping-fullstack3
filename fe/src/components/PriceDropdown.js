@@ -8,12 +8,11 @@ function PriceDropdown() {
   const {setProducts, productList, initialProductList} = productStore()
   console.log('priceDropdown의 productList', productList)
   console.log('priceDropdown의 initialProductList', initialProductList)
-  const pList = [...productList]
   const iList = [...initialProductList]
 
   function filterByPrice(price){
     let pr1, pr2;
-    if (price ==='만원 이하'){
+    if (price ==='1만원 이하'){
       pr1= 0 ; pr2=10000
     } else if(price ==='만원~2만원'){
       pr1= 10000; pr2 = 20000
@@ -26,6 +25,7 @@ function PriceDropdown() {
     }
     const results = iList.filter(product => 
       product.price >= pr1 && product.price <=pr2)
+      console.log('가격 검색 result ', results)
     setProducts(results)
   }
   return (

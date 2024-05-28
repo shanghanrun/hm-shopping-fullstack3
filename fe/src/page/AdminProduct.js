@@ -5,7 +5,7 @@ import productStore from '../store/productStore'
 import uiStore from '../store/uiStore'
 import NewItemDialog from "../components/NewItemDialog";
 import ReactPaginate from "react-paginate";
-import { useSearchParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import ProductTable from "../components/ProductTable";
 import orderStore from '../store/orderStore'
 
@@ -17,11 +17,9 @@ const AdminProduct = () => {
   const [showDialog, setShowDialog] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
 
-  const [query, setQuery] = useSearchParams();  
+  // const [query, setQuery] = useSearchParams();  
   const [searchQuery, setSearchQuery] = useState({
-    page: query.get("page") || 1,
-    name: query.get("name") || "",
-  }); //검색 조건들을 저장하는 객체
+    page: 1,name: ""})
 
   const [mode, setMode] = useState("new");
   const tableHeader = [
@@ -41,24 +39,14 @@ const AdminProduct = () => {
 
   //상품리스트 가져오기 (url쿼리 맞춰서)
   useEffect(()=>{
-    getProductList({...searchQuery})
-    console.log('query :', query.toString())
-    navigate("?" + query.toString() )
-  },[query, selectedProduct])
-  useEffect(() => {
     getProductList(searchQuery)
-    //검색어나 페이지가 바뀌면 url바꿔주기 (검색어또는 페이지가 바뀜 => url 바꿔줌=> url쿼리 읽어옴=> 이 쿼리값 맞춰서  상품리스트 가져오기)
     if(searchQuery.name === ''){
       delete searchQuery.name;
     }
-
-    // const params = new URLSearchParams(searchQuery)
-    // const urlQuery = params.toString()
-    // console.log('query url:',urlQuery)
-    // navigate("?" + urlQuery)    
     const searchParamsString = new URLSearchParams(searchQuery).toString();
-    navigate("?" + searchParamsString )    
-  }, [searchQuery, productUpdated]);
+    navigate("?" + searchParamsString )
+  },[searchQuery, selectedProduct, productUpdated])
+
 
   const deleteItem = async (id) => {
     //아이템 삭제하가ㅣ
@@ -114,20 +102,25 @@ const AdminProduct = () => {
           style={{display:'flex', gap:'100px'}}
         >
           <SearchBox
-            query={query}
             searchQuery={searchQuery}
             setSearchQuery={setSearchQuery}
             placeholder="제품 이름으로 검색"
             field="name"
           />
-          <Button variant="success" onClick={showPopup}>show popup</Button>
+          {/* <Button variant="success" onClick={showPopup}>show popup</Button> */}
+
            <input type="file" onChange={handleFileChange} accept=".xlsx" />
           <Button variant="danger" onClick={handleUpload}>Add Items(batch)</Button>
         </div>
         <Button className="mt-2 mb-2" onClick={handleClickNewItem}>
           Add New Item +
         </Button>
-        <h5>Total Products: {totalProductCount} 품목</h5>
+
+        <div style={{display:'flex', gap:'40px'}}>
+          <h5>Total Products: {totalProductCount} 품목</h5>
+          <h6>found current page Products: {productList?.length}개</h6>
+        </div>
+
         <ProductTable
           header={tableHeader}
           data={productList}
