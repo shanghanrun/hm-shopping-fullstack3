@@ -42,7 +42,9 @@ const OrderStatusCardOuter = ({order}) => {
           <div style={{fontWeight:'bold', color:'blue'}}
           >₩ {currencyFormat(order.totalPrice)}</div>
           <div style={{marginTop:'10px'}}>
-            <button onClick={() => setShowDetails(!showDetails)}>
+            <button
+              style={{borderRadius:'4px'}} 
+              onClick={() => setShowDetails(!showDetails)}>
               {showDetails ? "간단히 보기": "주문상품 모두 보기" }
             </button>
           </div>
