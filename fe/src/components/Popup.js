@@ -1,33 +1,20 @@
 import React from "react";
-import { useEffect } from "react";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import ProductCard2 from "./ProductCard2";
+import Button from 'react-bootstrap/Button';
 
-const Popup = ({popupContent}) => {
+const Popup = ({showPopup, closePopup, newProductList}) => {
 
-  useEffect(() => {
-    if (popupContent) {
-      const { message } = popupContent;
-      if (message !== "" ) {
-        toast(message, {
-          className: "toast-message",
-        });
-      }
-    }
-  }, [popupContent]);
+  if(!showPopup || !newProductList) return <div></div>
   return (
-    <ToastContainer
-      position="bottom-center"
-      autoClose={50000000}
-      hideProgressBar={false}
-      newestOnTop={false}
-      closeOnClick
-      rtl={false}
-      pauseOnFocusLoss
-      draggable
-      pauseOnHover
-      theme="light"
-    />
+    <div className='popup'>
+      <h5>새로운 신상품 : {newProductList?.length}</h5>
+        {newProductList?.map((item, i)=>
+          <div key={i}>
+            <ProductCard2 item={item} />
+          </div>
+        )}
+        <Button onclick={()=>closePopup()}>닫기</Button>
+    </div>
   );
 };
 

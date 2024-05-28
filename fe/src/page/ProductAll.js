@@ -5,11 +5,11 @@ import productStore from '../store/productStore';
 import orderStore from '../store/orderStore'
 import userStore from '../store/userStore'
 import uiStore from '../store/uiStore'
-// import Popup from "../components/Popup";
+import Popup from "../components/Popup";
 
 
 const ProductAll = () => {
-  const {productList} = productStore()
+  const {productList,newProductList,showPopup, closePopup} = productStore()
   const {user} = userStore()
   // const {popupContent} = uiStore() 
   const {getOrderList} = orderStore()
@@ -21,6 +21,13 @@ const ProductAll = () => {
  
   return (
     <Container>
+      <div className='popup-mother'>
+        <Popup 
+        showPopup={showPopup}
+        closePopup={closePopup}
+        newProductList={newProductList}
+        />
+      </div>
       <Row>
         {productList?.map((product,i) =>(
           <Col md={3} sm={12} key={i}>
@@ -28,7 +35,6 @@ const ProductAll = () => {
           </Col>
         ))}
       </Row>
-      {/* <Popup popupContent={popupContent}/> */}
     </Container>
   );
 };

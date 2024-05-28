@@ -1,9 +1,8 @@
 import {create} from 'zustand'
 import api from '../utils/api';
 import uiStore from './uiStore'
-import { isEqual } from 'lodash';
+// import { isEqual } from 'lodash';
 
-// const {showToastMessage} =uiStore() 이러면 useRef()에러 난다.
 
 const productStore =create((set,get)=>({
 	error:'',
@@ -14,7 +13,19 @@ const productStore =create((set,get)=>({
 	totalPage:1,
 	totalProductCount:1,
 	newProductList:[], // 신상 공개용 리스트 
-	emptyNewProductList:()=>set({newProductList:[]}), 
+	showPopup: false, 
+	openPopup:()=>{
+		set({showPopup: true})
+	},
+	closePopup:()=>{
+		set({
+			showPopup: false,
+		});
+	},
+	emptyNewProductList:()=>set({
+		newProductList:[],
+		showPopup: false
+	}), 
 	setProducts:(results)=>{
 		set((state)=>({
 			productList: results,

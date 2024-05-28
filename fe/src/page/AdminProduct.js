@@ -10,14 +10,14 @@ import ProductTable from "../components/ProductTable";
 import orderStore from '../store/orderStore'
 
 const AdminProduct = () => {
-  const {productList, getProductList, totalPage, setSelectedProduct, deleteProduct, totalProductCount, selectedProduct, batchCreateProducts, productUpdated} = productStore()
+  const {productList, getProductList, totalPage, setSelectedProduct, deleteProduct, totalProductCount, selectedProduct, batchCreateProducts, productUpdated,
+  openPopup,emptyNewProductList } = productStore()
   const {getAllUserOrderList} = orderStore()
-  const {showPopup} = uiStore()
   const navigate = useNavigate();
   const [showDialog, setShowDialog] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
 
-  // const [query, setQuery] = useSearchParams();  
+ 
   const [searchQuery, setSearchQuery] = useState({
     page: 1,name: ""})
 
@@ -107,7 +107,8 @@ const AdminProduct = () => {
             placeholder="제품 이름으로 검색"
             field="name"
           />
-          {/* <Button variant="success" onClick={showPopup}>show popup</Button> */}
+          <Button variant="success" onClick={()=>openPopup()}>show popup</Button>
+          <Button onclick={()=>emptyNewProductList()}>신상홍보제거</Button>
 
            <input type="file" onChange={handleFileChange} accept=".xlsx" />
           <Button variant="danger" onClick={handleUpload}>Add Items(batch)</Button>
