@@ -73,7 +73,6 @@ const productStore =create((set,get)=>({
 		}
 	},
 	batchCreateProducts:async(formData,navigate)=>{
-		console.log('store로 받은 formData :', formData)
 		try{
 			const resp = await api.post('/product/batch', formData)
 			if(resp.status !==200) throw new Error(resp.error)
@@ -86,7 +85,10 @@ const productStore =create((set,get)=>({
 				productUpdated: !state.productUpdated
 			}))
 			navigate('/admin/product')
-			//이렇게 productList를 업데이트하면, 새로만든 물폼이 화면에 반영된다.
+			//이렇게 productList를 업데이트하면서 업데이트 될 것 같지만 그렇지 않다.
+			// 동일한 페이지로 라우팅되고, url주소만 표시된다.
+			// 실제적으로 업데이트가 되게 하려면, productUpdated 값을 구독하게 만들어서, useEffect를 
+			// 실시해서 getProductList()하게 만들어야 된다.
 
 		}catch(e){
 			console.log('e.message:', e.message)
