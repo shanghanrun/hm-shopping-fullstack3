@@ -117,7 +117,7 @@ productController.getProductList=async(req, res)=>{
 		res.status(200).json(response)   
 		// response객체로 들어가면 data: productList, totalPageNum:totalPages 가 되고
 		// 프론트앤드에서는 resp.data.data, resp.data.totalPageNum 으로 받는다. 
-		console.log('찾은 productList:', productList)
+		// console.log('찾은 productList:', productList)
 	}catch(e){
 		res.status(400).json({status:'fail', error:e.message})
 	}

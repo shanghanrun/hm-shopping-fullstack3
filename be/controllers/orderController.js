@@ -77,7 +77,7 @@ orderController.getOrderList=async(req, res)=>{
 
 		const orderList = await query.exec()
 		response.orderList = orderList
-		console.log('찾은 orderList', orderList)
+		// console.log('찾은 orderList', orderList)
 
 		res.status(200).json(response)
 	}catch(e){
@@ -113,7 +113,7 @@ orderController.getAllUserOrderList=async(req, res)=>{
 		console.log('totalCount :', totalCount)
 		response.data = orderList
 		response.totalCount = totalCount
-		console.log('찾은 orderList', orderList)
+		// console.log('찾은 orderList', orderList)
 
 		res.status(200).json(response)
 	}catch(e){
@@ -157,6 +157,20 @@ orderController.deleteOrder = async(req, res)=>{
         res.status(200).json({status:'ok', message: '삭제성공!'});
 	}catch(e){
         res.status(500).json({ status:'fail', error: e.message });
+	}
+}
+orderController.getUserOrder=async(req,res)=>{
+	//해당 id로 발견되지 않을 경우도 있다. 주문 안했으니
+	try{
+		console.log('getUserOrder!!!==============')
+		const userId = req.params.id
+		console.log('userId:', userId)
+		const foundOrder = await Order.findOne({userId})
+		// 검색해서 없으면 null 반환
+		console.log('foundOrder:',foundOrder)
+		res.status(200).json({status:'ok', data: foundOrder})
+	}catch(e){
+		res.status(400).json({status:'fail', error:e.message})
 	}
 }
 

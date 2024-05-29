@@ -6,7 +6,7 @@ const ProductCard2 = ({item}) => {
   return (
     <div className="card2">
       <img
-        src={item?.image} alt="" />
+        src={item?.image} alt="" width='200px' height='200px'/>
       <div>{item?.name}</div>
       <div>W {currencyFormat(item?.price)}</div>
     </div>

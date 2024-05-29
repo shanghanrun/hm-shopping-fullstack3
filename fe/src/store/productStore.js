@@ -14,8 +14,11 @@ const productStore =create((set,get)=>({
 	totalProductCount:1,
 	newProductList:[], // 신상 공개용 리스트 
 	showPopup: false, 
-	openPopup:()=>{
+	openPopup:async()=>{
+		// 한 페이지의 5개상품이 아니라 모든 상품리스트를 구해야 된다.
+		await get().makeNewProductList()
 		set({showPopup: true})
+		console.log('신상정보보여주기용 list', get().newProductList)
 	},
 	closePopup:()=>{
 		set({
@@ -26,12 +29,52 @@ const productStore =create((set,get)=>({
 		newProductList:[],
 		showPopup: false
 	}), 
+	makeNewProductList:async()=>{
+		try{ // query params없이 보내면 모든 데이터 받는다.
+			const resp = await api.get('/product') 
+			const list = resp.data.data;
+			console.log('신상 추출을 위한 모든 목록:', list)
+
+			const today = new Date();
+			const oneDayAgo = new Date(today);
+			oneDayAgo.setDate(today.getDate()-1);
+
+			set({
+				newProductList: list.filter((item)=>{
+					const itemDate = new Date(item.createdAt);
+					return itemDate >= oneDayAgo && itemDate <=today;
+				})
+			})
+		}catch(e){
+			console.log(e.message)
+		}	
+	},
 	setProducts:(results)=>{
 		set((state)=>({
 			productList: results,
 			productUpdated: !state.productUpdated
 		}))
 	},
+	sortProductListBySkuDesc: async()=>{
+		const resp= await api.get('/product')
+		const list = resp.data.data
+		const sortedList = list.slice().sort((a, b) => {
+			const skuA = parseInt(a.sku.replace('sku', ''), 10);
+			const skuB = parseInt(b.sku.replace('sku', ''), 10);
+			return skuB - skuA;
+		});
+		set({ productList: sortedList });
+	},
+	sortProductListBySkuAsc:()=>{
+		const list = get().productList;
+		const sortedList = list.slice().sort((a, b) => {
+			const skuA = parseInt(a.sku.replace('sku', ''), 10);
+			const skuB = parseInt(b.sku.replace('sku', ''), 10);
+			return skuA - skuB;
+		});
+		set({ productList: sortedList });
+	},
+
 	getProductList:async(searchQuery)=>{
 		if(searchQuery?.name === ''){
 			delete searchQuery.name;
@@ -57,6 +100,7 @@ const productStore =create((set,get)=>({
 			// payment페이지처럼 페이지네이션 안된 곳에서 에러메시지 안나오도록
 		}
 	},
+
 	selectProduct:(id)=>{
 		const selectedOne = get().productList.find((item)=> item._id === id)
 		set({selectedProduct: selectedOne})

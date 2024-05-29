@@ -95,18 +95,23 @@ body{
   margin-bottom: 10px;
 }
 .card2{
-  width: 300px;
-  height: 300px;
+  width: 250px;
+  height: 280px;
   margin: 10px 10px;
   padding: 10px 10px;
-  background: gray;
+  background: rgb(218, 210, 210);
 }
 .popup-mother{
   position: relative;
+  z-index:2;
+  width: 700px;
+  
 }
 .popup{
   position: absolute;
-  transparent: 0.5;
+  background: pink;
+  opacity: 0.9;
+  width: 900px;
 }
 
 .choice{
@@ -299,31 +304,5 @@ body{
     padding: 30px 20px;
 }
 
-
-.page-item {
-  background: pink;
-  border: 1px solid blue;
-  margin: 0 5px;
-  /* 각 페이지 항목 사이에 간격을 추가 */
-  padding: 5px 10px;
-  /* 패딩을 추가하여 클릭 가능한 영역을 확대 */
-  border-radius: 4px;
-  /* 둥근 모서리를 추가 */
-}
-
-.page-link {
-  color: blue;
-  /* 텍스트 색상을 지정 */
-  text-decoration: none;
-  /* 링크의 밑줄 제거 */
-}
-
-.page-item.disabled,
-.page-item.active {
-  background: lightblue;
-  /* 비활성화 및 활성화된 페이지의 배경 색상 변경 */
-  cursor: default;
-  /* 포인터 커서 제거 */
-}
 
 

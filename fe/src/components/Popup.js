@@ -7,13 +7,16 @@ const Popup = ({showPopup, closePopup, newProductList}) => {
   if(!showPopup || !newProductList) return <div></div>
   return (
     <div className='popup'>
-      <h5>새로운 신상품 : {newProductList?.length}</h5>
+      <h5 style={{margin:'10px 10px'}}>새로운 신상품 : {newProductList?.length}</h5>
+      <div style={{display:'flex', gap:'10px', flexWrap:'wrap'}}>
         {newProductList?.map((item, i)=>
-          <div key={i}>
+          <div key={i} >
             <ProductCard2 item={item} />
           </div>
         )}
-        <Button onclick={()=>closePopup()}>닫기</Button>
+      </div>
+        <Button style={{marginLeft:'10px',marginBottom:'10px'}} onClick={()=>
+          closePopup()}>닫기</Button>
     </div>
   );
 };

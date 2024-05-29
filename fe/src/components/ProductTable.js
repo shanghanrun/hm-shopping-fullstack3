@@ -1,15 +1,30 @@
-import React from "react";
+import React, {useState} from "react";
 import Button from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
 import { currencyFormat } from "../utils/number";
+import productStore from '../store/productStore'
+
 const ProductTable = ({ header, data, deleteItem, openEditForm }) => {
+  const {sortProductListBySkuDesc, sortProductListBySkuAsc } = productStore()
+  const [sortBySkuDesc, setSortBySkuDesc] = useState(true);
+
+  async function sortBySku(){
+    if (sortBySkuDesc) {
+      await sortProductListBySkuDesc();
+    } else {
+      sortProductListBySkuAsc();
+    }
+    // 토글
+    setSortBySkuDesc(!sortBySkuDesc);
+  }
+  
   return (
     <div className="overflow-x">
       <Table striped bordered hover>
         <thead>
           <tr>
             {header.map((title, index) => (
-              <th key={index}>{title}</th>
+              <th key={index} onClick={sortBySku} style={{ cursor: 'pointer' }}>{title}</th>
             ))}
           </tr>
         </thead>

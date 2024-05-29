@@ -7,7 +7,7 @@ const Sidebar = () => {
   const [show, setShow] = useState(false);
 
   const handleSelectMenu = (url) => {
-    setShow(false);
+    setShow(false);  // 각종 다이알로그창 나온 것 닫음
     navigate(url);
   };
 
@@ -17,7 +17,9 @@ const Sidebar = () => {
         <Link to="/">
           <img width={100} src="/image/hm-logo.png" alt="hm-logo.png" />
         </Link>
-        <div className="sidebar-item">Admin Account</div>
+        <div className="sidebar-item"
+          onClick={() => handleSelectMenu("/admin/account")}
+        >Admin Account</div>
         <ul className="sidebar-area">
           <li
             className="sidebar-item"

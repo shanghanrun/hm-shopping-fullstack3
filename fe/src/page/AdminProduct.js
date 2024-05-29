@@ -8,16 +8,17 @@ import ReactPaginate from "react-paginate";
 import { useNavigate } from "react-router-dom";
 import ProductTable from "../components/ProductTable";
 import orderStore from '../store/orderStore'
+import userStore from '../store/userStore'
 
 const AdminProduct = () => {
-  const {productList, getProductList, totalPage, setSelectedProduct, deleteProduct, totalProductCount, selectedProduct, batchCreateProducts, productUpdated,
-  openPopup,emptyNewProductList } = productStore()
+    const {productList, getProductList, totalPage, setSelectedProduct, deleteProduct, totalProductCount, selectedProduct, batchCreateProducts, productUpdated, openPopup,emptyNewProductList } = productStore()
+    const {getUserList} = userStore()
   const {getAllUserOrderList} = orderStore()
   const navigate = useNavigate();
   const [showDialog, setShowDialog] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
 
- 
+
   const [searchQuery, setSearchQuery] = useState({
     page: 1,name: ""})
 
@@ -35,6 +36,7 @@ const AdminProduct = () => {
 
   useEffect(()=>{
     getAllUserOrderList() //order 페이지를 위해 미리 데이터를 로딩해 둔다.
+    getUserList() // AdminAccount를 위해 미리
   },[])
 
   //상품리스트 가져오기 (url쿼리 맞춰서)
@@ -107,8 +109,8 @@ const AdminProduct = () => {
             placeholder="제품 이름으로 검색"
             field="name"
           />
-          <Button variant="success" onClick={()=>openPopup()}>show popup</Button>
-          <Button onclick={()=>emptyNewProductList()}>신상홍보제거</Button>
+          <Button variant="success" onClick={async()=> await openPopup()}>신상 보여주기</Button>
+          <Button onClick={()=>emptyNewProductList()}>신상홍보제거</Button>
 
            <input type="file" onChange={handleFileChange} accept=".xlsx" />
           <Button variant="danger" onClick={handleUpload}>Add Items(batch)</Button>
@@ -145,9 +147,8 @@ const AdminProduct = () => {
           breakLabel="..."
           breakClassName="page-item"
           breakLinkClassName="page-link"
-          containerClassName="pagination"
+          containerClassName="pagination display-center list-style-none"
           activeClassName="active"
-          className="display-center list-style-none"
         />
       </Container>
 

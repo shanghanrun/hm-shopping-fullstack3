@@ -4,7 +4,7 @@ import { Row, Col, Container } from "react-bootstrap";
 import productStore from '../store/productStore';
 import orderStore from '../store/orderStore'
 import userStore from '../store/userStore'
-import uiStore from '../store/uiStore'
+// import uiStore from '../store/uiStore'
 import Popup from "../components/Popup";
 
 

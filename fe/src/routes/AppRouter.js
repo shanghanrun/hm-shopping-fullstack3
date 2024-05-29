@@ -11,6 +11,7 @@ import ProductAll from "../page/ProductAll";
 import ProductDetail from "../page/ProductDetail";
 import RegisterPage from "../page/RegisterPage";
 import PrivateRoute from "./PrivateRoute";
+import AdminAccount from "../page/AdminAccount";
 
 const AppRouter = () => {
   return (
@@ -28,6 +29,7 @@ const AppRouter = () => {
       <Route element={<PrivateRoute permissionLevel="admin" />}>
         <Route path="/admin/product" element={<AdminProduct />} />
         <Route path="/admin/order" element={<AdminOrderPage />} />
+        <Route path="/admin/account" element={<AdminAccount />} />
       </Route>
     </Routes>
   );

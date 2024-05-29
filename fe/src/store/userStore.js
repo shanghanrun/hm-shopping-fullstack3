@@ -6,8 +6,22 @@ import cartStore from './cartStore'
 const userStore =create((set,get)=>({
 	user:null,
 	error:'',
+	userList:[],
+	totalUserCount:1,
+	userUpdated:false,
 	// loading:true,
 	setError:(val)=>set({error:val}),
+	getUserList: async()=>{
+		try{
+			const resp = await api.get('/user')
+			set({
+				userList: resp.data.data,
+				totalUserCount:resp.data.data?.length
+			})
+		}catch(e){
+
+		}
+	},
 	loginWithToken: async ()=> {
 		// const token= sessionStorage.getItem('token') 이것 필요없다. api에서 알아서 해더에 넣도록 설정해 두었다.
 		//그럼에도 불구하고, token값을 불러와서 token이 없을 경우에는 불필요한 백엔드 요청을 안하도록 하는 것이 좋다.
@@ -74,6 +88,7 @@ const userStore =create((set,get)=>({
 			console.log('회원등록 성공')
 			// set({user: resp.data.data})
 		
+			set({userUpdated: !get().userUpdated})
 			uiStore.getState().showToastMessage('회원가입을 완료했습니다.', 'success')
 			navigate('/login')
 

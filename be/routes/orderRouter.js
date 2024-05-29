@@ -11,6 +11,9 @@ orderRouter.get('/', authController.authenticate, orderController.getOrderList)
 // admin이 모든 order를 볼 수 있도록 함
 orderRouter.get('/all', authController.authenticate, orderController.getAllUserOrderList)
 
+// user의 order가져오기
+orderRouter.get('/user-order/:id', orderController.getUserOrder)
+
 // 물품 배송상태를 admin이 수정함
 orderRouter.put('/', authController.authenticate, authController.checkAdminPermission, orderController.updateOrder)
 
