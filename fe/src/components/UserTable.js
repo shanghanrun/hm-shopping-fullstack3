@@ -2,7 +2,6 @@ import React, {useState, useEffect} from "react";
 import Button from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
 import { currencyFormat } from "../utils/number";
-import orderStore from '../store/orderStore'
 import api from './../utils/api';
 
 const UserTable = ({ header, userList, orderList, openEditForm }) => {
@@ -41,11 +40,15 @@ const UserTable = ({ header, userList, orderList, openEditForm }) => {
               return (
                 <tr key={index}>
                   <th>{index}</th>
+                  <th>
+                    <img src={user.image} width="150px" alt=""/>
+                  </th>
                   <th>{user.name}</th>
                   <th style={{ minWidth: "100px" }}>{user.email}</th>
                   <th>{user.level}</th>
                   <th>{currencyFormat(userOrder.totalPrice)}</th>
                   <th>
+                    <p>{user.memo}</p>
                     <Button size="sm" onClick={() => openEditForm(user)}>
                       Edit
                     </Button>

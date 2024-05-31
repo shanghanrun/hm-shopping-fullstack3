@@ -12,7 +12,7 @@ import uiStore from '../store/uiStore'
 const AdminOrderPage = () => {
   const navigate = useNavigate();
   const [query, setQuery] = useSearchParams();
-  const { orderList, getOrderList2, totalPageNum,setSelectedOrder,selectedOrder, getAllUserOrderList, allUserOrderList, totalCount } = orderStore()
+  const { orderList, totalPageNum,setSelectedOrder,selectedOrder, getAllUserOrderList, allUserOrderList, totalCount } = orderStore()
   const [searchQuery, setSearchQuery] = useState({
     page: query.get("page") || 1,
     orderNum: query.get("orderNum") || "",

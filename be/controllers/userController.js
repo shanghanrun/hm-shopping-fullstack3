@@ -102,5 +102,19 @@ userController.getUserList=async(req,res)=>{
 		res.status(400).json({status:'fail', error:e.message})
 	}
 }
+userController.updateUser=async(req,res)=>{
+	try{
+		const {userId, level,memo,image} = req.body;
+		const updatedUser = await User.findByIdAndUpdate(
+			{_id:userId},
+			{level, memo,image},
+			{new: true}
+		)
+		if(!updatedUser) throw new Error("user doesn't exist")
+		res.status(200).json({status:'ok', data: updatedUser})
+	}catch(e){
+		res.status(400).json({status:'fail', error:e.message})
+	}
+}
 
 module.exports = userController;

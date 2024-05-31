@@ -5,12 +5,29 @@ import cartStore from './cartStore'
 
 const userStore =create((set,get)=>({
 	user:null,
+	selectedUser:null,
 	error:'',
 	userList:[],
 	totalUserCount:1,
 	userUpdated:false,
 	// loading:true,
 	setError:(val)=>set({error:val}),
+	setSelectedUser:(user)=>{
+		set({selectedUser: user})},
+	updateUser:async(userId, level, memo, image)=>{
+		try{
+			const resp = await api.put('/user', {userId,level,memo, image})
+			if(resp.status !==200){
+				throw new Error('업데이트 실패함')
+			}
+			set({
+				selectedUser: resp.data.data,
+				userUpdated: !get().userUpdated
+			})
+		}catch(e){
+			console.log(e.message)
+		}
+	},
 	getUserList: async()=>{
 		try{
 			const resp = await api.get('/user')

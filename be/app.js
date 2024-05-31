@@ -12,7 +12,8 @@ app.use(bodyParser.urlencoded({extended:false})) //url 인식
 app.use(bodyParser.json()) // req.body가 객체로 인식이 된다.
 app.use('/api', indexRouter)
 
-const mongoURI = process.env.LOCAL_DB
+// const mongoURI = process.env.LOCAL_DB
+const mongoURI = process.env.CLOUD_DB
 mongoose.connect(mongoURI)
 	.then(()=>console.log('mongoose connected'))
 	.catch((e)=>console.log("DB connection fail", e.message))

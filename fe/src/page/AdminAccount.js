@@ -3,17 +3,17 @@ import { Container, Button } from "react-bootstrap";
 import SearchBox from "../components/SearchBox";
 import userStore from '../store/userStore'
 import uiStore from '../store/uiStore'
-import NewItemDialog from "../components/NewItemDialog";
 import { useNavigate } from "react-router-dom";
 import UserTable from "../components/UserTable";
 import orderStore from '../store/orderStore'
+import UserDetailDialog from "../components/UserDetailDialog";
 
 const AdminAccount = () => {
-    const {userList, getUserList, setSelectedUser, totalUserCount, selectedUser, batchCreateUsers, userUpdated } = userStore()
+    const {userList, getUserList, setSelectedUser, totalUserCount, batchCreateUsers, userUpdated } = userStore()
     console.log('admin account의 userList :', userList)
   const {getAllUserOrderList, orderList} = orderStore()
   const navigate = useNavigate();
-  const [showDialog, setShowDialog] = useState(false);
+  const [open, setOpen] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
 
 
@@ -23,12 +23,12 @@ const AdminAccount = () => {
   const [mode, setMode] = useState("new");
   const tableHeader = [
     "#",
+    "Image",
     "Name",
     "Email",
     "Level",
     "Order",
-    "Status",
-    "Image",
+    "Memo",
   ];
 
   useEffect(()=>{
@@ -39,20 +39,24 @@ const AdminAccount = () => {
     getUserList()  //user정보가 업데이트되면 발동
   },[userUpdated])
 
+ 
 
   const openEditUser = (user) => {
     //edit모드로 설정하고
     // 아이템 수정다이얼로그 열어주기
     setMode('edit')
     setSelectedUser(user)
-    setShowDialog(true)
+    setOpen(true)
+  };
+  const handleClose = () => {
+    setOpen(false);
   };
 
   const handleClickNewUser = () => {
     //new 모드로 설정하고
     setMode('new')
     // 다이얼로그 열어주기
-    setShowDialog(true)
+    setOpen(true)
   };
 
   const handleFileChange = (event) => {
@@ -107,6 +111,7 @@ const AdminAccount = () => {
         />
         
       </Container>
+      {open && <UserDetailDialog open={open} handleClose={handleClose} />}
 
     </div>
   );
