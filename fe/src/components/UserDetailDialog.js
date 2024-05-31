@@ -6,14 +6,22 @@ import { LEVEL_STATUS } from "../constants/user.constants";
 import { currencyFormat } from "../utils/number";
 import userStore from '../store/userStore'
 
-const UserDetailDialog = ({ open, handleClose }) => {
-  const {selectedUser, updateUser} = userStore()
+const UserDetailDialog = ({ open, handleClose, mode }) => {
+  const {selectedUser, updateUser, createNewUser} = userStore()
   console.log('selectedUser :', selectedUser)
+  const [userName, setUserName] = useState(selectedUser?.name)
+  const [userEmail, setUserEmail] = useState(selectedUser?.email)
   const [userLevel, setUserLevel] = useState(selectedUser?.level);
   const [userMemo, setUserMemo] = useState(selectedUser?.memo);
   const [userImage, setUserImage]= useState(selectedUser?.image);
 
 
+  const handleNameChange = (event) => {
+    setUserName(event.target.value);
+  };
+  const handleEmailChange = (event) => {
+    setUserEmail(event.target.value);
+  };
   const handleLevelChange = (event) => {
     setUserLevel(event.target.value);
   };
@@ -26,8 +34,16 @@ const UserDetailDialog = ({ open, handleClose }) => {
 
   const submitNewInfo = async (e) => {
     e.preventDefault(); // 이걸 해야 된다!!
+    if(mode ==='new'){
+      await createNewUser(userName,userEmail,userLevel,userMemo,userImage)
+      setUserName(''); setUserEmail('');
+      setUserImage(''); setUserMemo('');
+      setUserLevel('')
+      //참고로 createNewUser로 만들어진 유저의 패스워드는 모두 '123456'이 된다.
+    } else{
+      await updateUser(selectedUser._id, userLevel, userMemo, userImage);
+    }
     
-    await updateUser(selectedUser._id, userLevel, userMemo, userImage);
     handleClose();
   };
 
@@ -37,12 +53,36 @@ const UserDetailDialog = ({ open, handleClose }) => {
   return (
     <Modal show={open} onHide={handleClose}>
       <Modal.Header closeButton>
-        <Modal.Title>Order Detail</Modal.Title>
+        <Modal.Title>User Detail 정보</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <p>유저 name: {selectedUser?.name}</p>
-        {/* <p>주문날짜: {selectedOrder.updatedAt.slice(0, 10)}</p> */}
-        <p>이메일: {selectedUser?.email}</p>
+        {
+        (mode ==='new')?
+          <div>
+            <Form.Group as={Col} controlId="name">
+              <Form.Label>name</Form.Label>
+              <Form.Control
+                type="text"
+                value={userName}
+                onChange={handleNameChange}
+              />
+            </Form.Group>
+            <Form.Group as={Col} controlId="email">
+              <Form.Label>email</Form.Label>
+              <Form.Control
+                type="text"
+                value={userEmail}
+                onChange={handleEmailChange}
+              />
+            </Form.Group>
+          </div>
+        :
+          <div>
+            <p>유저 name: {selectedUser?.name}</p>
+            <p>이메일: {selectedUser?.email}</p>
+          </div>
+      }
+        
         
         <Form onSubmit={submitNewInfo}>
           <Form.Group as={Col} controlId="level">
@@ -59,7 +99,10 @@ const UserDetailDialog = ({ open, handleClose }) => {
             <Form.Label>Memo</Form.Label>
             <Form.Control
               type="text"
-              placeholder={selectedUser?.memo}
+              placeholder={
+                (mode === 'new')? '':
+                selectedUser?.memo
+              }
               value={userMemo}
               onChange={handleMemoChange}
             />
@@ -71,7 +114,9 @@ const UserDetailDialog = ({ open, handleClose }) => {
 
               <img
                 id="uploadedimage"
-                src={userImage}
+                src={
+                  (mode ==='new')? '':
+                  selectedUser?.image}
                 className="upload-image mt-2"
                 alt="uploadedimage"
               />

@@ -13,7 +13,7 @@ const AdminAccount = () => {
     console.log('admin account의 userList :', userList)
   const {getAllUserOrderList, orderList} = orderStore()
   const navigate = useNavigate();
-  const [open, setOpen] = useState(false);
+  const [showDialog, setShowDialog] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
 
 
@@ -46,17 +46,17 @@ const AdminAccount = () => {
     // 아이템 수정다이얼로그 열어주기
     setMode('edit')
     setSelectedUser(user)
-    setOpen(true)
+    setShowDialog(true)
   };
   const handleClose = () => {
-    setOpen(false);
+    setShowDialog(false);
   };
 
   const handleClickNewUser = () => {
     //new 모드로 설정하고
     setMode('new')
     // 다이얼로그 열어주기
-    setOpen(true)
+    setShowDialog(true)
   };
 
   const handleFileChange = (event) => {
@@ -111,7 +111,7 @@ const AdminAccount = () => {
         />
         
       </Container>
-      {open && <UserDetailDialog open={open} handleClose={handleClose} />}
+      <UserDetailDialog open={showDialog} handleClose={handleClose} mode={mode} />
 
     </div>
   );

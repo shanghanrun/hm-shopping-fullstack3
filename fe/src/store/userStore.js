@@ -14,6 +14,20 @@ const userStore =create((set,get)=>({
 	setError:(val)=>set({error:val}),
 	setSelectedUser:(user)=>{
 		set({selectedUser: user})},
+	createNewUser:async(name,email,level,memo,image)=>{ // admin에서 직접 생성하는 user
+		try{
+			const resp = await api.post('/user/new', {name,email,level,memo,image})
+			if(resp.status !==200){
+				throw new Error('새 유저 등록에 실패했습니다.')
+			}
+			set({
+				selectedUser: resp.data.data,
+				userUpdated: !get().userUpdated
+			})
+		}catch(e){
+			console.log(e.message)
+		}
+	},
 	updateUser:async(userId, level, memo, image)=>{
 		try{
 			const resp = await api.put('/user', {userId,level,memo, image})

@@ -25,6 +25,24 @@ userController.createUser=async(req, res)=>{
 		return res.status(400).json({status:'fail', error:e.message})
 	}
 }
+userController.createNewUser=async(req, res)=>{
+	try{
+		const {name, email, level,memo,image} = req.body;
+		const user = await User.findOne({email})
+		if(user){
+			throw new Error('이미 가입된 유저입니다.')
+		}
+		const password ='123456' //직접만든 user에게 부여되는 패스워드
+
+		const hash = bcrypt.hashSync(password, saltRounds)
+		const newUser = new User({email,password:hash, name, level,memo,image})
+		await newUser.save()
+
+		return res.status(200).json({status:'success', data: newUser})
+	}catch(e){
+		return res.status(400).json({status:'fail', error:e.message})
+	}
+}
 
 userController.loginWithEmail= async(req, res)=>{
 	try{
