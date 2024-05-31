@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Container, Button } from "react-bootstrap";
-import SearchBox from "../components/SearchBox";
 import userStore from '../store/userStore'
 import uiStore from '../store/uiStore'
 import { useNavigate } from "react-router-dom";
 import UserTable from "../components/UserTable";
 import orderStore from '../store/orderStore'
 import UserDetailDialog from "../components/UserDetailDialog";
+import SearchBox2 from "../components/SearchBox2.js";
 
 const AdminAccount = () => {
     const {userList, getUserList, setSelectedUser, totalUserCount, batchCreateUsers, userUpdated } = userStore()
@@ -18,7 +18,7 @@ const AdminAccount = () => {
 
 
   const [searchQuery, setSearchQuery] = useState({
-    page: 1,name: ""})
+    name: ""})
 
   const [mode, setMode] = useState("new");
   const tableHeader = [
@@ -36,8 +36,14 @@ const AdminAccount = () => {
   },[])
 
   useEffect(()=>{
-    getUserList()  //user정보가 업데이트되면 발동
-  },[userUpdated])
+    getUserList(searchQuery) //user정보업데이트 및 searchQeury바뀔 때 발동
+
+    if(searchQuery.name === ''){//이건 브라우저주소창을 위한 설정
+      delete searchQuery.name;
+    }
+    const searchParamsString = new URLSearchParams(searchQuery).toString();
+    navigate("?" + searchParamsString )
+  },[searchQuery, userUpdated])
 
  
 
@@ -85,7 +91,7 @@ const AdminAccount = () => {
         <div className="mt-2" 
           style={{display:'flex', gap:'100px'}}
         >
-          <SearchBox
+          <SearchBox2
             searchQuery={searchQuery}
             setSearchQuery={setSearchQuery}
             placeholder="유저 이름으로 검색"

@@ -114,7 +114,13 @@ userController.getUser=async(req, res)=>{
 }
 userController.getUserList=async(req,res)=>{
 	try{
-		const users = await User.find()
+		const {name} = req.query;
+		const condition = name? {name:{$regex:name, $options:'i'}}
+		: {}
+		
+		let query = User.find(condition)
+
+		const users = await query.exec()
 		res.status(200).json({status:'ok', data: users})
 	}catch(e){
 		res.status(400).json({status:'fail', error:e.message})

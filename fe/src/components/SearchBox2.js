@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
-const SearchBox = ({ searchQuery, setSearchQuery, placeholder, field }) => {
+const SearchBox2 = ({ searchQuery, setSearchQuery, placeholder, field }) => {
   const [keyword, setKeyword]=useState('')
 
   const onCheckEnter = (event) => {
@@ -12,7 +12,7 @@ const SearchBox = ({ searchQuery, setSearchQuery, placeholder, field }) => {
         delete searchQuery.name
       } 
 
-      setSearchQuery({ ...searchQuery,  [field]: event.target.value });
+      setSearchQuery({ ...searchQuery, [field]: event.target.value });
       setKeyword('')
     }
   };
@@ -30,4 +30,4 @@ const SearchBox = ({ searchQuery, setSearchQuery, placeholder, field }) => {
   );
 };
 
-export default SearchBox;
+export default SearchBox2;

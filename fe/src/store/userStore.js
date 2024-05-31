@@ -24,6 +24,7 @@ const userStore =create((set,get)=>({
 				selectedUser: resp.data.data,
 				userUpdated: !get().userUpdated
 			})
+			uiStore.getState().showToastMessage('새 회원을 만들었습니다', 'success')
 		}catch(e){
 			console.log(e.message)
 		}
@@ -38,13 +39,17 @@ const userStore =create((set,get)=>({
 				selectedUser: resp.data.data,
 				userUpdated: !get().userUpdated
 			})
+			uiStore.getState().showToastMessage('회원정보를 수정했습니다.', 'success')
 		}catch(e){
 			console.log(e.message)
 		}
 	},
-	getUserList: async()=>{
+	getUserList: async(searchQuery)=>{
+		if(searchQuery?.name ===''){
+			delete searchQuery.name;
+		}
 		try{
-			const resp = await api.get('/user')
+			const resp = await api.get('/user', {params:{...searchQuery}})
 			set({
 				userList: resp.data.data,
 				totalUserCount:resp.data.data?.length
