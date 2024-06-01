@@ -3,12 +3,16 @@ import api from '../utils/api';
 import uiStore from './uiStore'
 // import { isEqual } from 'lodash';
 
-
+const CLOTHES_CATEGORY = [
+    "top", "dress", "pants", "skirt","shorts","hat",
+    "shirt",
+]; // 소문자로 해야 비교가 된다.
 const productStore =create((set,get)=>({
 	error:'',
 	productUpdated:false,
 	selectedProduct:null,
 	productList:[],
+	clothesList:[],
 	initialProductList:[],
 	totalPage:1,
 	totalProductCount:1,
@@ -84,15 +88,20 @@ const productStore =create((set,get)=>({
 			if(resp.status !==200) throw new Error(resp.error)
 			console.log('product목록:',resp.data.data)
 			console.log('page 정보 : ',resp.data.totalPageNum)
+
 			set({
 				totalPage: resp.data.totalPageNum,
 				totalProductCount: resp.data.totalProductCount,
 			})
 			const list = resp.data.data
 			console.log('list :', list)
+			const clothes = resp.data.data.filter((item)=>item.category.some( cat =>CLOTHES_CATEGORY.includes(cat)))
+			console.log('클로즈리스트:', clothes)
 
 			set({
-				productList: [...list],    	initialProductList:[...list]})	
+				productList: [...list],    	initialProductList:[...list],
+				clothesList: clothes
+			})	
 		}catch(e){
 			console.log('e.message:', e.message)
 			set({error: e.message})

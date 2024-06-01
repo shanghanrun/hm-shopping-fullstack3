@@ -17,8 +17,10 @@ const clothesStore =create((set,get)=>({
 	// totalProductCount:1,
 
 	getClothesList:()=>{
-		const list = productStore.getState().productList.filter((item)=> CLOTHES_CATEGORY.includes(item.category))
-		console.log('list!!!', list)
+		console.log('클로스 스토어 프러덕트리스트:', productStore.getState().productList);
+		const list = productStore.getState().productList.filter((item)=> item.category.some(cat => CLOTHES_CATEGORY.includes(cat))
+		);
+		console.log('클로스 스토어 list!!!', list)
 		set({
 			clothesList: list,
 			clothesUpdated: !get().clothesUpdated

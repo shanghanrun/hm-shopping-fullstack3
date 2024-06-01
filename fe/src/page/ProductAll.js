@@ -11,14 +11,12 @@ import Popup from "../components/Popup";
 
 const ProductAll = () => {
   const {productList,newProductList,showPopup, closePopup} = productStore()
-  const {getClothesList} = clothesStore()
   const {user} = userStore()
   // const {popupContent} = uiStore() 
   const {getOrderList} = orderStore()
   // productList를 구독하고 있으면 된다.
 
   useEffect(()=>{
-    getClothesList()
     if(user) getOrderList()
   },[])
  
