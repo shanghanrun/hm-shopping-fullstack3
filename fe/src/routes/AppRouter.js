@@ -12,6 +12,11 @@ import ProductDetail from "../page/ProductDetail";
 import RegisterPage from "../page/RegisterPage";
 import PrivateRoute from "./PrivateRoute";
 import AdminAccount from "../page/AdminAccount";
+import Clothes from "../page/Clothes";
+import Computer from "../page/Computer";
+import Appliances from "../page/Appliances";
+import Movies from "../page/Movies";
+import Info from "../page/Info";
 
 const AppRouter = () => {
   return (
@@ -20,6 +25,13 @@ const AppRouter = () => {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/product/:id" element={<ProductDetail />} />
+
+      <Route path="/clothes" element={<Clothes />} />
+      <Route path="/computer" element={<Computer />} />
+      <Route path="/appliances" element={<Appliances />} />
+      <Route path="/movies" element={<Movies />} />
+      <Route path="/info" element={<Info />} />
+
       <Route element={<PrivateRoute permissionLevel="customer" />}>
         <Route path="/cart" element={<CartPage />} />
         <Route path="/payment" element={<PaymentPage />} />

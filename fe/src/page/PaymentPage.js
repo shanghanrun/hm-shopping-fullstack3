@@ -30,9 +30,32 @@ const PaymentPage = () => {
     lastName: "",
     contact: "",
     address: "",
-    city: "",
+    // city: "", address와 중복되어서 제거한다.
     zip: "",
   });
+
+  useEffect(()=>{
+    // daum Postcode API를 사용할 수 있는 지 확인
+    if (typeof window.daum === 'undefined') {
+      const script = document.createElement('script');
+      script.src = 'https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
+      script.onload = () => console.log('Daum Postcode script loaded');
+      document.head.appendChild(script);
+    }
+  },[])
+
+  // 다음 주소 검색 API통합
+  const execDaumPostcode =()=>{
+    new window.daum.Postcode({
+      oncomplete:function(data){
+        setShipInfo({
+          ...shipInfo,
+          address:data.address,
+          zip:data.zonecode,
+        })
+      }
+    }).open();
+  }
   
   //맨처음 페이지 로딩할때는 넘어가고  오더번호를 받으면 성공페이지로 넘어가기
 
@@ -150,38 +173,46 @@ const PaymentPage = () => {
                   />
                 </Form.Group>
 
+                <Button onClick={execDaumPostcode}>주소 검색</Button>
+                <Form.Group as={Col} controlId="formGridZip">
+                    <Form.Label>우편번호</Form.Label>
+                    <Form.Control
+                      placeholder=" 위의 '주소검색'을 이용해서 입력해주세요"
+                      onChange={handleFormChange}
+                      required
+                      name="zip"
+                      value={shipInfo.zip}
+                    />
+                  </Form.Group>
                 <Form.Group className="mb-3" controlId="formGridAddress2">
                   <Form.Label>주소</Form.Label>
                   <Form.Control
-                    placeholder="Apartment, studio, or floor"
+                    placeholder="자동 완성시 혹시라도 주소정보가 부족하면 추가로 입력해 주세요"
                     onChange={handleFormChange}
                     required
                     name="address"
+                    value={shipInfo.address}
                   />
+                 
                 </Form.Group>
 
                 <Row className="mb-3">
-                  <Form.Group as={Col} controlId="formGridCity">
-                    <Form.Label>City</Form.Label>
+                  {/* <Form.Group as={Col} controlId="formGridCity">
+                    <Form.Label>도시</Form.Label>
                     <Form.Control
                       onChange={handleFormChange}
                       required
                       name="city"
+                      value={shipInfo.city}
                     />
-                  </Form.Group>
+                  </Form.Group> */}
 
-                  <Form.Group as={Col} controlId="formGridZip">
-                    <Form.Label>Zip</Form.Label>
-                    <Form.Control
-                      onChange={handleFormChange}
-                      required
-                      name="zip"
-                    />
-                  </Form.Group>
+                  
                 </Row>
-                <div className="mobile-receipt-area">
-                  {/* <OrderReceipt /> */}
-                </div>
+                {/* <div className="mobile-receipt-area"> 
+                //아래로 이동했다. 그래야 우측에 나타나게 된다.
+                  <OrderReceipt /> 
+                </div> */}
                 <div>
                   <h2 className="payment-title">결제 정보</h2>
                 </div>

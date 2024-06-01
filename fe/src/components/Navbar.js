@@ -32,14 +32,11 @@ const Navbar = ({ user }) => {
   const isMobile = window.navigator.userAgent.indexOf("Mobile") !== -1;
   const [showSearchBox, setShowSearchBox] = useState(false);
   const menuList = [
-    "여성",
-    "Divided",
-    "남성",
-    "신생아/유아",
-    "아동",
-    "H&M HOME",
-    "Sale",
-    "지속가능성",
+    "Clothes",
+    "Computer",
+    "Appliances",
+    "Movies",
+    "Info",
   ];
   
 
@@ -175,7 +172,7 @@ const Navbar = ({ user }) => {
         <ul className="menu">
           {menuList.map((menu, index) => (
             <li key={index}>
-              <a href="#">{menu}</a>
+              <Link to={`/${menu.toLowerCase()}`}>{menu}</Link>
             </li>
           ))}
         </ul>

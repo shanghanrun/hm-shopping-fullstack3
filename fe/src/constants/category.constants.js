@@ -11,5 +11,8 @@ export const category =[
 	'드레스',
 	'반바지',
 	'바스켓',
-	'쇼츠'
+	'쇼츠',
+	'movie',
+	'computer',
+	'appliance'
 ] 
