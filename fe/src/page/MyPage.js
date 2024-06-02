@@ -7,11 +7,13 @@ import OrderStatusCardOuter from "../components/OrderStatusCardOuter";
 import "../style/orderStatus.style.css";
 import orderStore from '../store/orderStore'
 import userStore from '../store/userStore'
+import movieStore from '../store/movieStore'
 
 const MyPage = () => {
   const {user} = userStore()
   const {orderList, getOrderList} = orderStore()
-
+  const {movie} = movieStore()
+  
   // 오더리스트가 없다면? 주문한 상품이 없습니다 메세지 보여주기
   useEffect(()=>{
     // getOrderList()
