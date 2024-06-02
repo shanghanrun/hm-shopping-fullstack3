@@ -81,6 +81,7 @@ const Navbar = ({ user }) => {
     }
 
     const movieInfo = getMovieInfo()
+    console.log('받은 영화 정보: ', movieInfo)
     let movieObj;
     if(movieInfo){ // movieInfo가 null일 경우도 있다.
     // movieInfo가 null 이면 JSON.parse(movieInfo)에서 에러 난다.

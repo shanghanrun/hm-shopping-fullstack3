@@ -47,6 +47,11 @@ const MyPage = () => {
           </div> 
         ))
       }
+      <div style={{border:'1px solid gray'}}>
+        <img src={movie?.image} width='300px' alt=''/>
+        <div> title : {movie?.title}</div>
+        <div> 예약좌석 : {movie?.seat}</div>
+      </div>
     </Container>
   );
 };
