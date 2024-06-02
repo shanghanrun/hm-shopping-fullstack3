@@ -11,6 +11,7 @@ userRouter.post('/login', userController.loginWithEmail) //post 'api/user/login'
 userRouter.post('/google', userController.loginWithGoogle)//post 'api/user/google'
 userRouter.get('/me', authController.authenticate, userController.getUser) //post 'api/user/me'
 userRouter.get('/', authController.authenticate, authController.checkAdminPermission, userController.getUserList)
+userRouter.get('/verify-token', authController.verifyToken)
 userRouter.put('/', authController.authenticate, authController.checkAdminPermission, userController.updateUser)
 
 

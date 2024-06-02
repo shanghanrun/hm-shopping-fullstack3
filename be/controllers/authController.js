@@ -39,4 +39,21 @@ authController.checkAdminPermission=async(req,res,next)=>{
 	}
 }
 
+authController.verifyToken =async(req, res)=>{
+	const token = req.query.token;
+  if (!token) {
+    return res.status(400).json({ error: 'Token is required' });
+  }
+
+  jwt.verify(token, process.env.JWT_SECRET_KEY, (err, decoded) => {
+    if (err) {
+      return res.status(401).json({ error: 'Invalid token' });
+    }
+
+    // Assuming the token contains id, name, and email
+    const { id, name, email } = decoded;
+    res.json({ id, name, email });
+  });
+}
+
 module.exports = authController;
