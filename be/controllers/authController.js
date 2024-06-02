@@ -41,6 +41,7 @@ authController.checkAdminPermission=async(req,res,next)=>{
 
 authController.verifyToken =async(req, res)=>{
 	const token = req.query.token;
+	console.log('영화페이지로부터 받은 토큰', token)
   if (!token) {
     return res.status(400).json({ error: 'Token is required' });
   }
