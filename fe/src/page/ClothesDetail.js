@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Container, Row, Col, Button, Dropdown } from "react-bootstrap";
-// import { ColorRing } from "react-loader-spinner";
-//데이터를 미리 받아오니, 로딩스피너가 불필요하다.
 
 import productStore from '../store/productStore'
 import userStore from '../store/userStore'
