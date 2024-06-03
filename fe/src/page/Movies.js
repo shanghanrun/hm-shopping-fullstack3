@@ -19,10 +19,10 @@ const Movies =()=>{
 
 			// let userInfo =user
 			// userInfo = userInfo.JSON.stringify()
-			url = `https://eloquent-pastelito-120fb6.netlify.app?user=${userInfo}`;
+			url = `https://gleeful-halva-28c7ac.netlify.app?user=${userInfo}`;
 			window.location.href = url;
 		} else{
-			url ='https://eloquent-pastelito-120fb6.netlify.app'
+			url ='https://gleeful-halva-28c7ac.netlify.app'
 			//  navigate('https://eloquent-pastelito-120fb6.netlify.app');
 			window.location.href = url;
 		}

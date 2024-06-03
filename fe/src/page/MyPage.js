@@ -11,6 +11,9 @@ import userStore from '../store/userStore'
 const MyPage = () => {
   const {user} = userStore()
   const {orderList, getOrderList} = orderStore()
+  const title = localStorage.getItem('title')
+  const seatInfo = localStorage.getItem('seat') //문자열
+  const image = localStorage.getItem('image')
 
   // 오더리스트가 없다면? 주문한 상품이 없습니다 메세지 보여주기
   useEffect(()=>{
@@ -45,6 +48,13 @@ const MyPage = () => {
           </div> 
         ))
       }
+      <div style={{border:'1px solid gray', borderRadius:'10px', background:'#d1f9ee',
+        padding: '10px'
+      }}>
+        <img src={image} width='400px' alt=''/>
+        <div>예약영화: {title}</div>
+        <div>예약좌석: {seatInfo}</div>
+      </div>
     </Container>
   );
 };

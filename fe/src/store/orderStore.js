@@ -20,15 +20,12 @@ const orderStore =create((set, get)=>({
 	updateOrder: async(orderId, newStatus) => {
 		try{
 			const resp = await api.put('/order', {orderId, newStatus})
-			if(resp.status !==200){
-				throw new Error(resp.error)
-			}
 			console.log('업데이트되어 프론트로 온 order:', resp.data.updatedOrder)
 			set({selectedOrder: resp.data.updatedOrder})
 
 		}catch(e){
-			console.log(e.message)
-			uiStore.getState().showToastMessage(e.message, 'error');
+			console.log(e.error)
+			uiStore.getState().showToastMessage(e.error, 'error');
 		}
 	},
 
@@ -36,9 +33,6 @@ const orderStore =create((set, get)=>({
 	createOrder:async(data, navigate)=>{
 		try{
 			const resp = await api.post('/order', data)
-			if(resp.status !==200){
-				throw new Error(resp.error)
-			}
 			console.log('오더넘버:',resp.data.orderNum)
 			set({orderNum: resp.data.orderNum})
 			await cartStore.getState().emptyCart()
@@ -47,8 +41,8 @@ const orderStore =create((set, get)=>({
 			navigate('/payment/success')
 			
 		}catch(e){
-			console.log(e.message)
-			uiStore.getState().showToastMessage(e.message, 'error'); 
+			console.log(e.error)
+			uiStore.getState().showToastMessage(e.error, 'error'); 
 		}
 	},
 
@@ -59,7 +53,6 @@ const orderStore =create((set, get)=>({
 		console.log('getOrderList 서치쿼리', searchQuery)
 		try{
 			const resp = await api.get('/order',{params:searchQuery})
-			if(resp.status !==200) throw new Error(resp.error)
 			console.log('order목록:', resp.data.orderList)
 			console.log('page 정보:', resp.data.totalPageNum)
 			set({
@@ -67,14 +60,13 @@ const orderStore =create((set, get)=>({
 				totalPageNum: resp.data.totalPageNum
 			})	
 		}catch(e){
-			console.log('e.message:', e.message)
-			set({error: e.message})
+			console.log('e.error:', e.error)
+			set({error: e.error})
 		}
 	},
 	getAllUserOrderList:async(searchQuery)=>{  // admin에서 필요한 것
 		try{
 			const resp = await api.get('/order/all',{params:searchQuery})
-			if(resp.status !==200) throw new Error(resp.error)
 			console.log('order목록:', resp.data.data)
 			console.log('page 정보:', resp.data.totalPageNum)
 			console.log('getAlluserOrerList 객체:', resp)
@@ -84,8 +76,8 @@ const orderStore =create((set, get)=>({
 				totalCount: resp.data.totalCount
 			})	
 		}catch(e){
-			console.log('e.message:', e.message)
-			set({error: e.message})
+			console.log('e.error:', e.error)
+			set({error: e.error})
 		}
 	}
 }))

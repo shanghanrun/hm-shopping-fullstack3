@@ -50,7 +50,7 @@ const productStore =create((set,get)=>({
 				})
 			})
 		}catch(e){
-			console.log(e.message)
+			console.log(e.error)
 		}	
 	},
 	setProducts:(results)=>{
@@ -85,7 +85,6 @@ const productStore =create((set,get)=>({
 		}
 		try{
 			const resp= await api.get('/product', {params: {...searchQuery}})
-			if(resp.status !==200) throw new Error(resp.error)
 			console.log('product목록:',resp.data.data)
 			console.log('page 정보 : ',resp.data.totalPageNum)
 
@@ -103,9 +102,9 @@ const productStore =create((set,get)=>({
 				clothesList: clothes
 			})	
 		}catch(e){
-			console.log('e.message:', e.message)
-			set({error: e.message})
-			// uiStore.getState().showToastMessage(e.message, 'error');
+			console.log('e.error:', e.error)
+			set({error: e.error})
+			// uiStore.getState().showToastMessage(e.error, 'error');
 			// payment페이지처럼 페이지네이션 안된 곳에서 에러메시지 안나오도록
 		}
 	},
@@ -118,7 +117,6 @@ const productStore =create((set,get)=>({
 		console.log('store로 받은 formData :', formData)
 		try{
 			const resp = await api.post('/product', formData)
-			if(resp.status !==200) throw new Error(resp.error)
 			console.log('성공한 데이터:', resp.data.data)
 			uiStore.getState().showToastMessage('상품가입을 완료했습니다.', 'success');
 
@@ -131,15 +129,14 @@ const productStore =create((set,get)=>({
 			//이렇게 productList를 업데이트하면, 새로만든 물폼이 화면에 반영된다.
 
 		}catch(e){
-			console.log('e.message:', e.message)
-			set({error: e.message})
-			uiStore.getState().showToastMessage(e.message, 'error');
+			console.log('e.error:', e.error)
+			set({error: e.error})
+			uiStore.getState().showToastMessage(e.error, 'error');
 		}
 	},
 	batchCreateProducts:async(formData,navigate)=>{
 		try{
 			const resp = await api.post('/product/batch', formData)
-			if(resp.status !==200) throw new Error(resp.error)
 			console.log('성공한 데이터:', resp.data.data)
 			uiStore.getState().showToastMessage('상품 일괄가입을 완료했습니다.', 'success');
 
@@ -155,9 +152,9 @@ const productStore =create((set,get)=>({
 			// 실시해서 getProductList()하게 만들어야 된다.
 
 		}catch(e){
-			console.log('e.message:', e.message)
-			set({error: e.message})
-			uiStore.getState().showToastMessage(e.message, 'error');
+			console.log('e.error:', e.error)
+			set({error: e.error})
+			uiStore.getState().showToastMessage(e.error, 'error');
 		}
 	},
 	setSelectedProduct:(product)=>{
@@ -171,7 +168,6 @@ const productStore =create((set,get)=>({
 		console.log('store로 받은 formData :', formData)
 		try{
 			const resp = await api.put('/product/'+formData._id, formData)
-			if(resp.status !==200) throw new Error(resp.error)
 			console.log('성공한 데이터:', resp.data.data)
 			set((state)=>({
 				selectedProduct: resp.data.data,
@@ -187,16 +183,15 @@ const productStore =create((set,get)=>({
 			//이렇게 하면, 페이지가 열리면서 자연스럽게 새로운 productList를 받아오게 된다.
 
 		}catch(e){
-			console.log('e.message:', e.message)
-			set({error: e.message})
-			uiStore.getState().showToastMessage(e.message, 'error');
+			console.log('e.error:', e.error)
+			set({error: e.error})
+			uiStore.getState().showToastMessage(e.error, 'error');
 		}
 	},
 	deleteProduct:async(id,navigate)=>{
 		console.log('store로 받은 id :', id)
 		try{
 			const resp = await api.delete('/product/'+id)
-			if(resp.status !==200) throw new Error(resp.error)
 			console.log('성공한 메시지:', resp.data.message)
 			uiStore.getState().showToastMessage('상품이 삭제되었습니다.', 'success');		
 			set((state)=>({
@@ -207,16 +202,15 @@ const productStore =create((set,get)=>({
 			//이렇게 하면, 페이지가 열리면서 자연스럽게 새로운 productList를 받아오게 된다.
 
 		}catch(e){
-			console.log('e.message:', e.message)
-			set({error: e.message})
-			uiStore.getState().showToastMessage(e.message, 'error');
+			console.log('e.error:', e.error)
+			set({error: e.error})
+			uiStore.getState().showToastMessage(e.error, 'error');
 		}
 	},
 	getProduct:async(id)=>{
 		console.log('store로 받은 id :', id)
 		try{
 			const resp = await api.get('/product/'+id)
-			if(resp.status !==200) throw new Error(resp.error)
 			console.log('성공한 데이터:', resp.data.data)
 			set({selectedProduct: resp.data.data})
 			// uiStore.getState().showToastMessage('상품 정보 획득.', 'success'); 과잉메시지라서 
@@ -224,9 +218,9 @@ const productStore =create((set,get)=>({
 			// navigate('/product/'+id) 현재페이지 url이 바뀔 필요없다.
 
 		}catch(e){
-			console.log('e.message:', e.message)
-			set({error: e.message})
-			uiStore.getState().showToastMessage(e.message, 'error');
+			console.log('e.error:', e.error)
+			set({error: e.error})
+			uiStore.getState().showToastMessage(e.error, 'error');
 		}
 	}
 }))
