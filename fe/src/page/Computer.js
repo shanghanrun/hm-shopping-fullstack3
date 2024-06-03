@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import ProductCard from "../components/ProductCard";
+import ComputerCard from "../components/ComputerCard";
 import { Row, Col, Container } from "react-bootstrap";
 import productStore from '../store/productStore';
 import orderStore from '../store/orderStore'
@@ -16,7 +16,7 @@ const {computerList}= productStore()
       <Row>
         {computerList?.map((computer,i) =>(
           <Col md={3} sm={12} key={i}>
-            <ProductCard item={computer}/>
+            <ComputerCard item={computer}/>
           </Col>
         ))}
       </Row>

@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import ProductCard from "../components/ProductCard";
+import ClothesCard from "../components/ClothesCard";
 import { Row, Col, Container } from "react-bootstrap";
 import productStore from '../store/productStore';
 import orderStore from '../store/orderStore'
@@ -19,7 +19,7 @@ const {clothesList}= productStore()
       <Row>
         {clothesList?.map((clothes,i) =>(
           <Col md={3} sm={12} key={i}>
-            <ProductCard item={clothes}/>
+            <ClothesCard item={clothes}/>
           </Col>
         ))}
       </Row>
