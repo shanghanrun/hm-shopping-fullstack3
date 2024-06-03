@@ -14,6 +14,8 @@ const productStore =create((set,get)=>({
 	error:'',
 	productUpdated:false,
 	selectedProduct:null,
+	selectedClothes:null,
+	selectedComputer:null,
 	productList:[],
 	clothesList:[],
 	computerList:[],
@@ -39,13 +41,14 @@ const productStore =create((set,get)=>({
 	}), 
 	makeNewProductList:async()=>{
 		try{ // query params없이 보내면 모든 데이터 받는다.
+			const days = 7;
 			const resp = await api.get('/product') 
 			const list = resp.data.data;
 			console.log('신상 추출을 위한 모든 목록:', list)
 
 			const today = new Date();
 			const oneDayAgo = new Date(today);
-			oneDayAgo.setDate(today.getDate()-1);
+			oneDayAgo.setDate(today.getDate()-days);
 
 			set({
 				newProductList: list.filter((item)=>{
@@ -120,6 +123,14 @@ const productStore =create((set,get)=>({
 	selectProduct:(id)=>{
 		const selectedOne = get().productList.find((item)=> item._id === id)
 		set({selectedProduct: selectedOne})
+	},
+	selectClothes:(id)=>{
+		const selectedOne = get().clothesList.find((item)=> item._id === id)
+		set({selectedClothes: selectedOne})
+	},
+	selectComputer:(id)=>{
+		const selectedOne = get().computerList.find((item)=> item._id === id)
+		set({selectedComputer: selectedOne})
 	},
 	createProduct:async(formData, navigate)=>{
 		console.log('store로 받은 formData :', formData)

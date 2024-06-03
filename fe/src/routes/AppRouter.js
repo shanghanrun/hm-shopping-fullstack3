@@ -16,6 +16,8 @@ import Clothes from "../page/Clothes";
 import Computer from "../page/Computer";
 import Movies from "../page/Movies";
 import Info from "../page/Info";
+import ClothesDetail from "../page/ClothesDetail";
+import ComputerDetail from "../page/ComputerDetail";
 
 const AppRouter = () => {
   return (
@@ -26,7 +28,9 @@ const AppRouter = () => {
       <Route path="/product/:id" element={<ProductDetail />} />
 
       <Route path="/clothes" element={<Clothes />} />
+      <Route path="/clothes/:id" element={<ClothesDetail />} />
       <Route path="/computer/가전/자동차" element={<Computer />} />
+      <Route path="/computer/가전/자동차/:id" element={<ComputerDetail />} />
       <Route path="/movies" element={<Movies />} />
       <Route path="/info" element={<Info />} />
 
