@@ -19,6 +19,8 @@ import CategoryDropdown from "./CategoryDropdown";
 import SizeDropdown from "./SizeDropdown";
 
 const Navbar = ({ user }) => {
+  console.log('user 정보:',user)
+  // user를 찍어보니, 처음에는 null이다가 시간이 지나서 user값이 들어온다.
   let [width, setWidth] = useState(0);
   let navigate = useNavigate();
   const {getProductList} =productStore()
@@ -59,9 +61,13 @@ const Navbar = ({ user }) => {
   };
 
   useEffect(()=>{
-    getUserMovies(user._id)
+    //user값이 처음에 null이다가 늦게 들어온다.
+    getUserMovies(user?._id)
+    // 그래서 user.id하면 에러가 발생한다.
+    // 그리고 초기에 user값이 없이 이것이 실행되니 값을 못받는다.
     console.log('navbar에서 영화정보 받아옴...')
-  },[])
+    
+  },[user])
 
   useEffect(()=>{
     getProductList(searchQuery)
