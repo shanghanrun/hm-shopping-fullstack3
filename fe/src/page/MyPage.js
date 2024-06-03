@@ -50,10 +50,12 @@ const MyPage = () => {
       <div style={{border:'1px solid gray'}}>
         <div>
           {userMovies.map((movie,i)=>
-            <div key={i} style={{border:'1px solid gray'}}>
+            <div key={i} style={{border:'1px solid gray', display:'flex', gap:'20px'}}>
                 <img src={movie?.image} width='300px' alt=''/>
-                <div> title : {movie?.title}</div>
-                <div> 예약좌석 : {movie?.seat}</div>
+                <div>
+                  <div> title : {movie?.title}</div>
+                  <div> 예약좌석 : {movie?.seat}</div>
+                </div>
             </div>)
           }
         </div>
