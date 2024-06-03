@@ -37,8 +37,7 @@ const Navbar = ({ user }) => {
   const [showSearchBox, setShowSearchBox] = useState(false);
   const menuList = [
     "Clothes",
-    "Computer",
-    "Appliances",
+    "Computer/가전/자동차",,
     "Movies",
     "Info",
   ];

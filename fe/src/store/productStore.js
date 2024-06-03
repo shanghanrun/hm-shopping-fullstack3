@@ -7,6 +7,9 @@ const CLOTHES_CATEGORY = [
     "top", "dress", "pants", "skirt","shorts","hat",
     "shirt",
 ]; // 소문자로 해야 비교가 된다.
+const COMPUTER_CATEGORY =[
+	"computer", "tv", "냉장고","자동차","세탁기"
+];
 const productStore =create((set,get)=>({
 	error:'',
 	productUpdated:false,
@@ -96,6 +99,8 @@ const productStore =create((set,get)=>({
 			// console.log('list :', list)
 			const clothes = resp.data.data.filter((item)=>item.category.some( cat =>CLOTHES_CATEGORY.includes(cat)))
 			console.log('클로즈리스트:', clothes)
+
+			const computers =resp.data.data.filter((item)=>item.category.som(cat =>COMPUTER_CATEGORY.includes(cat)))
 
 			set({
 				productList: [...list],    	initialProductList:[...list],

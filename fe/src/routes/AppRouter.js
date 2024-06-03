@@ -14,7 +14,6 @@ import PrivateRoute from "./PrivateRoute";
 import AdminAccount from "../page/AdminAccount";
 import Clothes from "../page/Clothes";
 import Computer from "../page/Computer";
-import Appliances from "../page/Appliances";
 import Movies from "../page/Movies";
 import Info from "../page/Info";
 
@@ -28,7 +27,6 @@ const AppRouter = () => {
 
       <Route path="/clothes" element={<Clothes />} />
       <Route path="/computer" element={<Computer />} />
-      <Route path="/appliances" element={<Appliances />} />
       <Route path="/movies" element={<Movies />} />
       <Route path="/info" element={<Info />} />
 
