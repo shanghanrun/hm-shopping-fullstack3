@@ -63,11 +63,11 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
      const formDataWithChosung = { ...formData, stock: totalStock, chosung };
     if (mode === "new") {
       await createProduct(formDataWithChosung, navigate);
-      setShowDialog(false);
     } else {
       await editProduct(formDataWithChosung, navigate);
-      setShowDialog(false);
     }
+    setStockError(false); setChosungError(false)
+    setShowDialog(false);
   };
 
   const handleChange = (event) => {
