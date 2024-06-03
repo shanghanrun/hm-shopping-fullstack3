@@ -12,7 +12,6 @@ import { useNavigate } from "react-router-dom";
 import userStore from '../store/userStore'
 import productStore from '../store/productStore'
 import cartStore from '../store/cartStore'
-import movieStore from '../store/movieStore'
 import {useSearchParams} from 'react-router-dom'
 import PriceDropdown from "./PriceDropdown";
 import CategoryDropdown from "./CategoryDropdown";
@@ -23,7 +22,6 @@ const Navbar = ({ user }) => {
   let navigate = useNavigate();
   const {getProductList} =productStore()
   const {cartCount, getCart} = cartStore()
-  const {setMovie} = movieStore()
  
 	const {logout} = userStore()
   const [searchQuery, setSearchQuery] =useState({
@@ -74,22 +72,7 @@ const Navbar = ({ user }) => {
     navigate("?" + searchParamsString )
   },[searchQuery, cartCount])
 
-  useEffect(()=>{
-    function getMovieInfo(){
-      const params = new URLSearchParams(window.location.search)
-      return params.get('info')
-    }
 
-    const movieInfo = getMovieInfo()
-    console.log('받은 영화 정보: ', movieInfo)
-    let movieObj;
-    if(movieInfo){ // movieInfo가 null일 경우도 있다.
-    // movieInfo가 null 이면 JSON.parse(movieInfo)에서 에러 난다.
-      movieObj = JSON.parse(movieInfo)
-    }
-    
-    setMovie(movieObj)
-  },[])
   
   return (
     <div>
