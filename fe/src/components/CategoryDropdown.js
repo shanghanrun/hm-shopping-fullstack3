@@ -6,7 +6,7 @@ import { category } from '../constants/category.constants';
 
 function CategoryDropdown() {
   const {setProducts, initialProductList} = productStore()
-  console.log('priceDropdown의 initialProductList', initialProductList)
+  // console.log('priceDropdown의 initialProductList', initialProductList)
   const iList = [...initialProductList]
 
   function filterByCategory(category){

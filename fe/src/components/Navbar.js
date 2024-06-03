@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import userStore from '../store/userStore'
 import productStore from '../store/productStore'
 import cartStore from '../store/cartStore'
+import movieStore from '../store/movieStore'
 import {useSearchParams} from 'react-router-dom'
 import PriceDropdown from "./PriceDropdown";
 import CategoryDropdown from "./CategoryDropdown";
@@ -22,6 +23,7 @@ const Navbar = ({ user }) => {
   let navigate = useNavigate();
   const {getProductList} =productStore()
   const {cartCount, getCart} = cartStore()
+  const {getUserMovies} = movieStore()
  
 	const {logout} = userStore()
   const [searchQuery, setSearchQuery] =useState({
@@ -57,6 +59,11 @@ const Navbar = ({ user }) => {
   };
 
   useEffect(()=>{
+    getUserMovies()
+    console.log('navbar에서 영화정보 받아옴...')
+  },[])
+
+  useEffect(()=>{
     getProductList(searchQuery)
     if(user){
       getCart()
@@ -72,7 +79,7 @@ const Navbar = ({ user }) => {
     navigate("?" + searchParamsString )
   },[searchQuery, cartCount])
 
-
+  
   
   return (
     <div>

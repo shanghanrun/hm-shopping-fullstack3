@@ -20,7 +20,7 @@ movieController.createUserMovie = async(req,res)=>{
 movieController.getUserMovies = async(req, res)=>{
 	try{
 		const {userId} = req.body;
-		const foundMoives = await Movie.find({userId})
+		const foundMovies = await Movie.find({userId})
 		if(!foundMovies) throw new Error('아무것도 없습니다.')
 		
 		res.status(200).json({status:'success', data:foundMovies})

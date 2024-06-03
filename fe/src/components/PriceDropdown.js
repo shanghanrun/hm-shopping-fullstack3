@@ -6,8 +6,8 @@ import { prices } from '../constants/prices.constants';
 
 function PriceDropdown() {
   const {setProducts, productList, initialProductList} = productStore()
-  console.log('priceDropdown의 productList', productList)
-  console.log('priceDropdown의 initialProductList', initialProductList)
+  // console.log('priceDropdown의 productList', productList)
+  // console.log('priceDropdown의 initialProductList', initialProductList)
   const iList = [...initialProductList]
 
   function filterByPrice(price){
