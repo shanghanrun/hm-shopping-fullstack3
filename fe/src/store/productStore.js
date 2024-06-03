@@ -16,6 +16,7 @@ const productStore =create((set,get)=>({
 	selectedProduct:null,
 	productList:[],
 	clothesList:[],
+	computerList:[],
 	initialProductList:[],
 	totalPage:1,
 	totalProductCount:1,
@@ -100,11 +101,13 @@ const productStore =create((set,get)=>({
 			const clothes = resp.data.data.filter((item)=>item.category.some( cat =>CLOTHES_CATEGORY.includes(cat)))
 			console.log('클로즈리스트:', clothes)
 
-			const computers =resp.data.data.filter((item)=>item.category.som(cat =>COMPUTER_CATEGORY.includes(cat)))
+			const computers =resp.data.data.filter((item)=>item.category.some(cat =>COMPUTER_CATEGORY.includes(cat)))
+			console.log('컴퓨터/가전 리스트:', computers)
 
 			set({
 				productList: [...list],    	initialProductList:[...list],
-				clothesList: clothes
+				clothesList: clothes,
+				computerList: computers
 			})	
 		}catch(e){
 			console.log('e.error:', e.error)

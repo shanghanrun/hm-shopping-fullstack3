@@ -26,7 +26,7 @@ const AppRouter = () => {
       <Route path="/product/:id" element={<ProductDetail />} />
 
       <Route path="/clothes" element={<Clothes />} />
-      <Route path="/computer" element={<Computer />} />
+      <Route path="/computer/가전/자동차" element={<Computer />} />
       <Route path="/movies" element={<Movies />} />
       <Route path="/info" element={<Info />} />
 
