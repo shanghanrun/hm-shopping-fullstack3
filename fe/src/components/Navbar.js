@@ -59,7 +59,7 @@ const Navbar = ({ user }) => {
   };
 
   useEffect(()=>{
-    getUserMovies()
+    getUserMovies(user._id)
     console.log('navbar에서 영화정보 받아옴...')
   },[])
 

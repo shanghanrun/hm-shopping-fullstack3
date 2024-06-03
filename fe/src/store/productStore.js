@@ -93,7 +93,7 @@ const productStore =create((set,get)=>({
 				totalProductCount: resp.data.totalProductCount,
 			})
 			const list = resp.data.data
-			console.log('list :', list)
+			// console.log('list :', list)
 			const clothes = resp.data.data.filter((item)=>item.category.some( cat =>CLOTHES_CATEGORY.includes(cat)))
 			console.log('클로즈리스트:', clothes)
 
