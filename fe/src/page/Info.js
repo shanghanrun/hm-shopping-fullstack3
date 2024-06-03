@@ -1,7 +1,7 @@
 const Info =()=>{
 
 	return(
-		<div>Info Page</div>
+		<h4>Info Page: Naver Map을 적용하려 준비중...</h4>
 	)
 }
 

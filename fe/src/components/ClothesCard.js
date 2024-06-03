@@ -10,7 +10,7 @@ const ClothesCard = ({item}) => {
 
   const showClothesDetail = (id) => {
     selectClothes(id)
-    navigate(`clothes/${id}`)
+    navigate(`/clothes/${id}`)
   };
   
   return (

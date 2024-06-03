@@ -10,7 +10,7 @@ const ComputerCard = ({item}) => {
 
   const showComputerDetail = (id) => {
     selectComputer(id)
-    navigate(`computer/가전/자동차/${id}`)
+    navigate(`/computer/${id}`)
   };
   
   return (

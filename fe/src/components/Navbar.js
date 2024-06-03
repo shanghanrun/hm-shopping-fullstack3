@@ -37,7 +37,7 @@ const Navbar = ({ user }) => {
   const [showSearchBox, setShowSearchBox] = useState(false);
   const menuList = [
     "Clothes",
-    "Computer/가전/자동차",,
+    "Computer",
     "Movies",
     "Info",
   ];
@@ -186,7 +186,7 @@ const Navbar = ({ user }) => {
         <ul className="menu">
           {menuList.map((menu, index) => (
             <li key={index}>
-              <Link to={`/${menu.toLowerCase()}`}>{menu}</Link>
+              <Link to={`/${menu.toLowerCase()}`}>{(menu==='Computer')? 'Computer/가전/자동차' : menu}</Link>
             </li>
           ))}
         </ul>
