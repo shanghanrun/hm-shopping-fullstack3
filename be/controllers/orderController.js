@@ -62,8 +62,8 @@ orderController.getOrderList=async(req, res)=>{
 		// 	orderNum:{$regex: orderNum, $options:'i'}
 		// 	} 
 		// 	:{}
-		console.log('cond : ', cond)
-		console.log('백엔드 page', page)
+		// console.log('cond : ', cond)
+		// console.log('백엔드 page', page)
 
 		let query = Order.find(cond)
 		let response = {status:'success'}
@@ -129,7 +129,7 @@ orderController.updateOrder = async (req, res) => {
             { status: newStatus }, // 수정 내용
             { new: true } // 수정된 문서를 반환하도록 설정
         );
-		console.log('업데이트된 order :', updatedOrder)
+		// console.log('업데이트된 order :', updatedOrder)
         if (!updatedOrder) {
             throw new Error("주문을 찾을 수 없습니다.")
         }
@@ -149,7 +149,7 @@ orderController.deleteOrder = async(req, res)=>{
 			{isDeleted: true},
 			{new: true}
 		)
-		console.log('삭제된 order :', updatedOrder)
+		// console.log('삭제된 order :', updatedOrder)
         if (!updatedOrder) {
             throw new Error("삭제 작업에 문제가 발생했습니다.")
         }
@@ -162,12 +162,12 @@ orderController.deleteOrder = async(req, res)=>{
 orderController.getUserOrder=async(req,res)=>{
 	//해당 id로 발견되지 않을 경우도 있다. 주문 안했으니
 	try{
-		console.log('getUserOrder!!!==============')
+		// console.log('getUserOrder!!!==============')
 		const userId = req.params.id
-		console.log('userId:', userId)
+		// console.log('userId:', userId)
 		const foundOrder = await Order.findOne({userId})
 		// 검색해서 없으면 null 반환
-		console.log('foundOrder:',foundOrder)
+		// console.log('foundOrder:',foundOrder)
 		res.status(200).json({status:'ok', data: foundOrder})
 	}catch(e){
 		res.status(400).json({status:'fail', error:e.message})

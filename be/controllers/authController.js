@@ -19,7 +19,7 @@ authController.authenticate=async(req, res, next)=>{
 			}
 			req.userId = payload._id  //다음 req에 userId 실어넘김
 		})
-		console.log('토큰 검증되었습니다.')
+		// console.log('토큰 검증되었습니다.')
 		next()
 	}catch(e){
 		return res.status(400).json({status:'fail', error:e.message})
