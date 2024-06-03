@@ -29,6 +29,7 @@ const productStore =create((set,get)=>({
 		await get().makeNewProductList()
 		set({showPopup: true})
 		console.log('신상정보보여주기용 list', get().newProductList)
+		uiStore.getState().showToastMessage('신상홍보 팝업을 보냈습니다.', 'success')
 	},
 	closePopup:()=>{
 		set({

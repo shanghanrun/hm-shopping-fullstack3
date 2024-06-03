@@ -36,13 +36,13 @@ const UserDetailDialog = ({ open, handleClose, mode }) => {
     e.preventDefault(); // 이걸 해야 된다!!
     if(mode ==='new'){
       await createNewUser(userName,userEmail,userLevel,userMemo,userImage)
-      setUserName(''); setUserEmail('');
-      setUserImage(''); setUserMemo('');
-      setUserLevel('')
       //참고로 createNewUser로 만들어진 유저의 패스워드는 모두 '123456'이 된다.
     } else{
       await updateUser(selectedUser._id, userLevel, userMemo, userImage);
     }
+    setUserName(''); setUserEmail('');
+    setUserImage(''); setUserMemo('');
+    setUserLevel('')
     
     handleClose();
   };

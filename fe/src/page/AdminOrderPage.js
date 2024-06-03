@@ -93,9 +93,8 @@ const AdminOrderPage = () => {
           breakLabel="..."
           breakClassName="page-item"
           breakLinkClassName="page-link"
-          containerClassName="pagination"
+          containerClassName="pagination display-center list-style-none"
           activeClassName="active"
-          className="display-center list-style-none"
         />
       </Container>
 
