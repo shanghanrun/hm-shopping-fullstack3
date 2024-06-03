@@ -1,20 +1,51 @@
 import React, {useState, useEffect} from "react";
-import { Button } from "react-bootstrap";
+import { Button, Badge } from "react-bootstrap";
 import { useNavigate } from "react-router";
 import { useLocation } from "react-router-dom";
 import { currencyFormat } from "../utils/number";
 import cartStore from '../store/cartStore'
 import uiStore from '../store/uiStore'
 import orderStore from '../store/orderStore'
+import userStore from '../store/userStore'
 
 const OrderReceipt = ({items}) => {
-  
+  const {credit, coupon, setCredit, setCoupon, setUserCreditCoupon} =userStore()
   const {showToastMessage} = uiStore()
   const {getCart} = cartStore()
+
   const location = useLocation();
   const navigate = useNavigate();
   const [total, setTotal] = useState(0);
+  const [lastTotal, setLastTotal] = useState(0)
+  const [leftCredit, setLeftCredit] = useState(credit)
+  const [leftCoupon, setLeftCoupon] = useState(coupon)
+  const [rightCredit, setRightCredit] = useState(0)
+  const [rightCoupon, setRightCoupon] = useState(0)
+
   const {setTotalPrice} = orderStore()
+  
+  function useAllCredit(){
+    if((total-leftCredit)>0){
+      setLastTotal(total - leftCredit) //변하기전 leftCredit값
+      setRightCredit(leftCredit); setLeftCredit(0); 
+    } else{
+      const diff = leftCredit -total;
+      setLastTotal(0)
+      setLeftCredit(leftCredit-diff);
+      setRightCredit(diff)
+    }
+  }
+  function useAllCoupon(){
+    if((total-leftCoupon)>0){
+      setLastTotal(total - leftCoupon)
+      setRightCoupon(leftCoupon); setLeftCoupon(0); 
+    } else{
+      const diff = leftCoupon -total;
+      setLastTotal(0)
+      setLeftCoupon(leftCoupon-diff);
+      setRightCoupon(diff)
+    }
+  }
   
   useEffect(()=>{
     // if(!items){
@@ -22,6 +53,7 @@ const OrderReceipt = ({items}) => {
     // }
     const newTotal = items.reduce((sum, item) => sum + (item.productId.price * item.qty), 0);
     setTotal(newTotal);
+    setLastTotal(newTotal);
     setTotalPrice(newTotal)
   },[items])
 
@@ -44,6 +76,14 @@ const OrderReceipt = ({items}) => {
         </div>
         <div>
           <strong>₩ {currencyFormat(total)}</strong>
+          <div>
+            <span>credit: {leftCredit} </span><Badge onClick={useAllCredit}>모두사용</Badge> => <span>{rightCredit}</span>
+          </div>
+          <div>
+            <span>coupon: {leftCredit} </span><Badge onClick={useAllCoupon}>모두사용</Badge> => <span>{rightCredit}</span>
+          </div>
+          <div>{total} - {rightCredit} -{rightCoupon} ={lastTotal}</div>
+          <div>총 결제금액 {lastTotal}의 5% 인 {lastTotal *0.05}원이 credit으로 적립됩니다.</div>
         </div>
       </div>
       {location.pathname.includes("/cart") && (
@@ -57,7 +97,12 @@ const OrderReceipt = ({items}) => {
                 navigate('/')
               }, 3000);
             } else{
-              await getCart()
+              //user정보변경(스토어:쿠폰,크래딧, 디비: 쿠폰,크래딧,크래딧적립)
+              //스토어
+              setCoupon(leftCoupon); setCredit(leftCredit)
+              //디비
+              await setUserCreditCoupon(leftCredit, leftCoupon,lastTotal *0.05)
+              await getCart() //미리 카트정보도 갱신(혹시 갈 수 있으니)
               navigate("/payment")}
             }}
         >

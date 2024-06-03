@@ -10,7 +10,20 @@ const userStore =create((set,get)=>({
 	userList:[],
 	totalUserCount:1,
 	userUpdated:false,
-	// loading:true,
+	credit:0,
+	coupon:0,
+	setCredit:(val)=>set({credit:val}),
+	setCoupon:(val)=>set({coupon:val}),
+	setUserCreditCoupon:async(credit,coupon, creditPlus)=>{
+		try{
+			const resp = await api.post('/user/credit-coupon',{credit,coupon,creditPlus})
+
+			//우선 아무것도 안한다.
+		}catch(e){
+			console.log(e.error)
+		}
+
+	},
 	setError:(val)=>set({error:val}),
 	setSelectedUser:(user)=>{
 		set({selectedUser: user})},
@@ -60,8 +73,14 @@ const userStore =create((set,get)=>({
 
 		try{
 			const resp = await api.get('/user/me')
-			const u = await resp.data.user
-			set({user: u})
+			const u = resp.data.user
+			const credit = u.credit
+			const coupon = u.coupon
+			set({
+				user: u,
+				credit: credit,
+				coupon: coupon
+			})
 		} catch(e){
 			console.log('e.error:', e.error)
 			// set({error:e.error}) 이걸 안해야 Login페이지에 쓸데없는 에러메시지가 안나온다.
@@ -76,9 +95,15 @@ const userStore =create((set,get)=>({
 		try{
 			const resp = await api.post('/user/login', {email,password})
 			console.log('resp', resp)
-			const u = await resp.data.user
-			const t = await resp.data.token
-			set({user: u })
+			const u = resp.data.user
+			const t = resp.data.token
+			const credit = u.credit
+			const coupon = u.coupon
+			set({
+				user: u,
+				credit: credit,
+				coupon: coupon
+			})
 			sessionStorage.setItem('token',t)
 		} catch(e){
 			console.log('e :', e)
@@ -94,9 +119,15 @@ const userStore =create((set,get)=>({
 	loginWithGoogle: async (token)=>{
 		try{
 			const resp = await api.post('/user/google', {token})
-			const u = await resp.data.user
-			const t = await resp.data.token
-			set({user: u })
+			const u = resp.data.user
+			const t = resp.data.token
+			const credit = u.credit
+			const coupon = u.coupon
+			set({
+				user: u,
+				credit: credit,
+				coupon: coupon
+			})
 			sessionStorage.setItem('token',t)
 		}catch(e){
 			console.log('e.error:', e.error)
