@@ -8,8 +8,9 @@ import uiStore from '../store/uiStore'
 import orderStore from '../store/orderStore'
 import userStore from '../store/userStore'
 
-const OrderReceipt = ({items}) => {
-  const {credit, coupon, setCredit, setCoupon, setUserCreditCoupon} =userStore()
+const OrderReceipt = ({items, user}) => {
+  const {setLeftCred, setLeftCoup, setLTotal, setCredPlus} =userStore()
+  console.log('user, credit, coupon :', user, ':', user?.credit, ':', user?.coupon)
   const {showToastMessage} = uiStore()
   const {getCart} = cartStore()
 
@@ -17,33 +18,52 @@ const OrderReceipt = ({items}) => {
   const navigate = useNavigate();
   const [total, setTotal] = useState(0);
   const [lastTotal, setLastTotal] = useState(0)
-  const [leftCredit, setLeftCredit] = useState(credit)
-  const [leftCoupon, setLeftCoupon] = useState(coupon)
+  const [subTotal, setSubTotal] = useState(0)
+  const [leftCredit, setLeftCredit] = useState(user?.credit)
+  const [leftCoupon, setLeftCoupon] = useState(user?.coupon)
   const [rightCredit, setRightCredit] = useState(0)
   const [rightCoupon, setRightCoupon] = useState(0)
+  const [couponUsed, setCouponUsed] = useState(false)//중복클릭방지용
+  const [creditUsed, setCreditUsed] = useState(false)
 
   const {setTotalPrice} = orderStore()
   
   function useAllCredit(){
-    if((total-leftCredit)>0){
-      setLastTotal(total - leftCredit) //변하기전 leftCredit값
-      setRightCredit(leftCredit); setLeftCredit(0); 
-    } else{
-      const diff = leftCredit -total;
-      setLastTotal(0)
-      setLeftCredit(leftCredit-diff);
-      setRightCredit(diff)
+    console.log('lastTotal:', lastTotal)
+    console.log('subTotal:', subTotal)
+    if (lastTotal === 0 || subTotal ===0) return // lastTotal이 0이 된 상황에서는 계산 안한다.
+    if (leftCredit === 0) return
+    if(!creditUsed){
+      if((subTotal-leftCredit)>0){
+        setLastTotal(subTotal - leftCredit) //변하기전 leftCredit값
+        setSubTotal(subTotal- leftCredit)
+        setRightCredit(leftCredit); setLeftCredit(0); 
+      } else{
+        const diff = leftCredit -subTotal;
+        setLastTotal(0)
+        setLeftCredit(diff);
+        setRightCredit(leftCredit-diff)
+      }
+      setCreditUsed(true)
     }
   }
   function useAllCoupon(){
-    if((total-leftCoupon)>0){
-      setLastTotal(total - leftCoupon)
-      setRightCoupon(leftCoupon); setLeftCoupon(0); 
-    } else{
-      const diff = leftCoupon -total;
-      setLastTotal(0)
-      setLeftCoupon(leftCoupon-diff);
-      setRightCoupon(diff)
+    console.log('lastTotal:', lastTotal)
+    console.log('subTotal:', subTotal)
+    if(lastTotal === 0 || subTotal ===0) return
+    if (leftCoupon === 0) return
+    if(!couponUsed){
+      if(subTotal-leftCoupon >0){
+        setLastTotal(subTotal - leftCoupon)
+        setSubTotal(subTotal- leftCoupon)
+        setRightCoupon(leftCoupon); setLeftCoupon(0); 
+      } else{
+        const diff = leftCoupon -subTotal;
+        setLastTotal(0)
+        setLeftCoupon(diff);
+        setRightCoupon(leftCoupon-diff)
+      }
+      setCouponUsed(true)
     }
   }
   
@@ -52,7 +72,7 @@ const OrderReceipt = ({items}) => {
     //   return(<div>None</div>)
     // }
     const newTotal = items.reduce((sum, item) => sum + (item.productId.price * item.qty), 0);
-    setTotal(newTotal);
+    setTotal(newTotal); setSubTotal(newTotal)
     setLastTotal(newTotal);
     setTotalPrice(newTotal)
   },[items])
@@ -80,10 +100,9 @@ const OrderReceipt = ({items}) => {
             <span>credit: {leftCredit} </span><Badge onClick={useAllCredit}>모두사용</Badge> => <span>{rightCredit}</span>
           </div>
           <div>
-            <span>coupon: {leftCredit} </span><Badge onClick={useAllCoupon}>모두사용</Badge> => <span>{rightCredit}</span>
+            <span>coupon: {leftCoupon} </span><Badge onClick={useAllCoupon}>모두사용</Badge> => <span>{rightCoupon}</span>
           </div>
-          <div>{total} - {rightCredit} -{rightCoupon} ={lastTotal}</div>
-          <div>총 결제금액 {lastTotal}의 5% 인 {lastTotal *0.05}원이 credit으로 적립됩니다.</div>
+          <div>{total} - {rightCredit} -{rightCoupon} ={currencyFormat(lastTotal)}</div>
         </div>
       </div>
       {location.pathname.includes("/cart") && (
@@ -97,11 +116,10 @@ const OrderReceipt = ({items}) => {
                 navigate('/')
               }, 3000);
             } else{
-              //user정보변경(스토어:쿠폰,크래딧, 디비: 쿠폰,크래딧,크래딧적립)
-              //스토어
-              setCoupon(leftCoupon); setCredit(leftCredit)
-              //디비
-              await setUserCreditCoupon(leftCredit, leftCoupon,lastTotal *0.05)
+              //user정보변경
+              setLeftCoup(leftCoupon); setLeftCred(leftCredit);
+              setLTotal(lastTotal)
+              setCredPlus(lastTotal*0.05)
               await getCart() //미리 카트정보도 갱신(혹시 갈 수 있으니)
               navigate("/payment")}
             }}

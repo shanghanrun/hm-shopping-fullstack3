@@ -11,6 +11,7 @@ const orderSchema = Schema({
 	shipTo:{type: Object, required:true},
 	contact:{type: Object, required:true},
 	totalPrice:{type:Number, default:0},
+	salePrice:{type:Number, default:0},
 	isDeleted:{type:Boolean, default:'false'}, //이것도 삭제하지 않고 남겨둔다.
 	items:[{
 		productId:{type:mongoose.ObjectId, ref:Product},

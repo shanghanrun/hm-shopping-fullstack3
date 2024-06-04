@@ -140,5 +140,20 @@ userController.updateUser=async(req,res)=>{
 		res.status(400).json({status:'fail', error:e.message})
 	}
 }
+userController.updateCreditCoupon=async(req,res)=>{
+	try{
+		const {userId, credit, coupon, creditPlus} = req.body;
+		console.log('userId, credit, coupon, creditPlus:', userId, ':',credit,':',coupon, ':',creditPlus)
+		const updatedUser = await User.findByIdAndUpdate(
+			userId, // 이렇게도 가능하다.
+			{credit: credit + creditPlus, coupon},
+			{new:true}
+		)
+		if(!updatedUser) throw new Error("user doesn't exist")
+			res.status(200).json({status:'ok',data:updatedUser})
+	}catch(e){
+		res.status(400).json({status:'fail', error:e.message})
+	}
+}
 
 module.exports = userController;

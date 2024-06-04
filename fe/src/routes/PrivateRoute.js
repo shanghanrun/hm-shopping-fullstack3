@@ -5,7 +5,7 @@ import { Navigate, Outlet } from "react-router-dom";
 const PrivateRoute = ({ permissionLevel }) => {
   const {user} = userStore()
   const isAuthenticated =
-    user?.level === permissionLevel || user?.level === "admin";
+    user?.level === permissionLevel || user?.level === "admin" || user?.level === 'fellow';
 
   return isAuthenticated ? <Outlet /> : <Navigate to="/login" />;
 };

@@ -36,6 +36,7 @@ const Navbar = ({ user }) => {
   const isMobile = window.navigator.userAgent.indexOf("Mobile") !== -1;
   const [showSearchBox, setShowSearchBox] = useState(false);
   const menuList = [
+    "All",
     "Clothes",
     "Computer",
     "Movies",
@@ -185,7 +186,7 @@ const Navbar = ({ user }) => {
       <div className="nav-menu-area">
         <ul className="menu">
           {menuList.map((menu, index) => (
-            <li key={index}>
+            <li key={index}className="menu-item">
               <Link to={`/${menu.toLowerCase()}`}>{(menu==='Computer')? 'Computer/가전/자동차' : menu}</Link>
             </li>
           ))}

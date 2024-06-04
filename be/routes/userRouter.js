@@ -9,6 +9,7 @@ userRouter.post('/new', userController.createNewUser) // admin에서 직접 user
 
 userRouter.post('/login', userController.loginWithEmail) //post 'api/user/login'
 userRouter.post('/google', userController.loginWithGoogle)//post 'api/user/google'
+userRouter.post('/credit-coupon', userController.updateCreditCoupon)
 userRouter.get('/me', authController.authenticate, userController.getUser) //post 'api/user/me'
 userRouter.get('/', authController.authenticate, authController.checkAdminPermission, userController.getUserList)
 userRouter.get('/verify-token', authController.verifyToken)

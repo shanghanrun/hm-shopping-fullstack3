@@ -12,11 +12,20 @@ const userStore =create((set,get)=>({
 	userUpdated:false,
 	credit:0,
 	coupon:0,
+	leftCredit:0,
+	leftCoupon:0,
+	creditPlus:0,
+	lastTotal:0,
 	setCredit:(val)=>set({credit:val}),
 	setCoupon:(val)=>set({coupon:val}),
-	setUserCreditCoupon:async(credit,coupon, creditPlus)=>{
+	setLeftCred:(val)=>set({leftCredit: val}),
+	setLeftCoup:(val)=>set({leftCoupon: val}),
+	setCredPlus:(val)=>set({creditPlus: val}),
+	setLTotal:(val)=>set({lastTotal: val}),
+	setUserCreditCoupon:async(userId, credit,coupon, creditPlus)=>{
 		try{
-			const resp = await api.post('/user/credit-coupon',{credit,coupon,creditPlus})
+			console.log('주문시 credit, coupon, creditPlus:', credit,':',coupon,':',creditPlus)
+			const resp = await api.post('/user/credit-coupon',{userId, credit,coupon,creditPlus})
 
 			//우선 아무것도 안한다.
 		}catch(e){

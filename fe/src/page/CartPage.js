@@ -37,7 +37,9 @@ const CartPage = () => {
           </div>
         </Col>
         <Col xs={12} md={5}>
-          <OrderReceipt items={cart?.items || []} />
+          <OrderReceipt items={cart?.items || []}
+            user={user}
+          />
         </Col>
       </Row>
     </Container>

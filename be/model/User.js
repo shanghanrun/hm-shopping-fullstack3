@@ -11,7 +11,7 @@ const userSchema = Schema({
 	name:{type:String, required:true},
 	memo:{type:String, default:''},
 	image:{type:String, default:''},
-	level:{type:String, default:'customer'} // customer, admin
+	level:{type:String, default:'customer'}, // customer, admin
 	credit:{type:Number, default:10000}, //가입과 동시에 만원 넣어줌
 	coupon:{type:Number, default:0}
 },{timestamps:true})

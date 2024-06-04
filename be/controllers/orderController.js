@@ -11,7 +11,7 @@ const PAGE_SIZE =5
 orderController.createOrder = async(req, res)=>{
 	try{
 		const userId = req.userId
-		const {shipTo, contact, totalPrice, items} = req.body;
+		const {shipTo, contact, totalPrice, salePrice,items} = req.body;
 
 		// 재고확인 & 재고 업데이트
 		const insufficientStockItems = await productController.checkItemsStock(items)
@@ -27,7 +27,7 @@ orderController.createOrder = async(req, res)=>{
 		const email = user.email
 
 		const newOrder = new Order({
-			userId, email, shipTo, contact,totalPrice, items,
+			userId, email, shipTo, contact,totalPrice, salePrice, items,
 			orderNum: orderNum,
 		})
 		await newOrder.save()

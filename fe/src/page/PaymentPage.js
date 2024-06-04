@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
-import OrderReceipt from "../components/OrderReceipt";
 import PaymentForm from "../components/PaymentForm";
 import "../style/paymentPage.style.css";
 import { useEffect } from "react";
@@ -9,8 +8,13 @@ import { cc_expires_format } from "../utils/number";
 import orderStore from '../store/orderStore'
 import uiStore from '../store/uiStore'
 import cartStore from '../store/cartStore'
+import userStore from '../store/userStore'
+import PaymentOrderReceipt from "../components/PaymentOrderReceipt";
 
 const PaymentPage = () => {
+  const {user, leftCredit, leftCoupon, creditPlus, lastTotal, setCoupon, setCredit, setUserCreditCoupon} = userStore()
+  const salePrice = lastTotal;
+  
   const {setShip, setPayment,createOrder} = orderStore()
   const {cart} = cartStore()
   const {showToastMessage} = uiStore()
@@ -59,7 +63,7 @@ const PaymentPage = () => {
   
   //맨처음 페이지 로딩할때는 넘어가고  오더번호를 받으면 성공페이지로 넘어가기
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async(event) => {
     event.preventDefault();
     if(!cart){
       showToastMessage('결제할 아이템이 없습니다. 첫페이지로 이동합니다.', 'error')
@@ -94,6 +98,7 @@ const PaymentPage = () => {
       // 잠시 주석처리한다. 에러상황에 대비해서
       const data ={
         totalPrice, 
+        salePrice,
         shipTo:{address,city,zip},
         contact:{firstName,lastName,contact},
         items: cart.items.map((item)=>{
@@ -108,8 +113,12 @@ const PaymentPage = () => {
           }
         })
       }
-
-      createOrder(data, navigate)
+      //user정보변경(스토어:쿠폰,크래딧, 디비: 쿠폰,크래딧,크래딧적립)
+      //스토어
+      setCoupon(leftCoupon); setCredit(leftCredit)
+      //디비
+      await setUserCreditCoupon(user?._id, leftCredit, leftCoupon, creditPlus)
+      await createOrder(data, navigate)
     }  
   };
 
@@ -216,23 +225,34 @@ const PaymentPage = () => {
                 <div>
                   <h2 className="payment-title">결제 정보</h2>
                 </div>
-                <PaymentForm cardValue={cardValue}
-                  handleInputFocus={handleInputFocus}
-                  handlePaymentInfoChange={handlePaymentInfoChange}
-                />
-                <Button
-                  variant="dark"
-                  className="payment-button pay-button"
-                  type="submit"
-                >
-                  결제하기
-                </Button>
+                {lastTotal?
+                  <div>
+                    <PaymentForm cardValue={cardValue}
+                      handleInputFocus={handleInputFocus}
+                      handlePaymentInfoChange={handlePaymentInfoChange}
+                    />
+                    <Button
+                      variant="dark"
+                      className="payment-button pay-button"
+                      type="submit"
+                    >
+                      결제하기
+                    </Button>
+                  </div>
+                  :
+                  <div>
+                    <h4>결제할 금액이 0원입니다.</h4>
+                    <Button variant='success' onClick={handleSubmit}>주문하기</Button>
+                  </div>
+                }
               </Form>
             </div>
           </div>
         </Col>
         <Col lg={5} className="receipt-area">
-          <OrderReceipt items={cart.items}/>
+          <PaymentOrderReceipt items={cart.items}
+            lastTotal={lastTotal}
+          />
         </Col>
       </Row>
     </Container>
