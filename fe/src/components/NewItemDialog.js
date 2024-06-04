@@ -250,7 +250,7 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
           </Button>
           <div className="mt-2">
             {stock.map((item, index) => (
-              <Row key={index}>
+              <Row key={item}> 
                 <Col sm={4}>
                   <Form.Select
                     onChange={(event) =>
