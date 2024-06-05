@@ -113,7 +113,7 @@ const AdminAccount = () => {
           header={tableHeader}
           userList={userList}
           orderList={orderList}
-          openEditForm={openEditUser}
+          openEditUser={openEditUser}
         />
         
       </Container>
