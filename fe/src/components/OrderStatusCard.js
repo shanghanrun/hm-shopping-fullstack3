@@ -8,12 +8,12 @@ const OrderStatusCard = ({order, item}) => {
   return (
     <div>
       <Row className="status-card">
-        <Col xs={2}>
+        <Col xs={3}>
           <img
             src={item.image} alt="" height={96}
           />
         </Col>
-        <Col xs={8} className="order-info">
+        <Col xs={7} className="order-info">
           {/* <div>
             <strong>주문번호: 1234</strong>
           </div> */}
