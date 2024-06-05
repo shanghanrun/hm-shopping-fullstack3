@@ -89,7 +89,7 @@ const UserDetailDialog = ({ open, handleClose, mode }) => {
             <Form.Label>Level</Form.Label>
             <Form.Select value={userLevel} onChange={handleLevelChange}>
               {LEVEL_STATUS.map((item, idx) => (
-                <option key={idx} value={item.toLowerCase()}>
+                <option key={idx} value={item}>
                   {item}
                 </option>
               ))}
