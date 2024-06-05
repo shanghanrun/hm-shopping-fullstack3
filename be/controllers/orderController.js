@@ -148,6 +148,7 @@ orderController.updateOrder = async (req, res) => {
     }
 };
 
+// 모든 배송처리가 완료되어서 혹시나 보고 싶지 않을 경우
 orderController.deleteOrder = async(req, res)=>{
 	try{
 		const orderId = req.params.id
