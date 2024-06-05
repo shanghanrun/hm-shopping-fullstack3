@@ -27,7 +27,7 @@ const AdminAccount = () => {
     "Name",
     "Email",
     "Level",
-    "Order",
+    "Total Order",
     "Memo",
   ];
 

@@ -25,6 +25,7 @@ orderController.createOrder = async(req, res)=>{
 
 		const user = await User.findById(userId)
 		const email = user.email
+		const prevPurchase = user.purchase
 
 		const newOrder = new Order({
 			userId, email, shipTo, contact,totalPrice, salePrice, items,
@@ -32,6 +33,12 @@ orderController.createOrder = async(req, res)=>{
 		})
 		await newOrder.save()
 		console.log('Order 생성됨')
+
+		//user정보에 purchase갱신
+		await User.findByIdAndUpdate(
+			userId,
+			{purchase: prevPurchase + salePrice}
+		)
 		//save후에 cart를 비워준다. 그런데 cart는 바로 비울 필요가 없다.
 		//await cartController.emptyCart() 해서 바로 카트를 비우면 
 		// 프론트엔드에서 getCart()하고, 화면구성할 때 에러가 나올 수 있다. 
