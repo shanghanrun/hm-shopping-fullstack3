@@ -39,7 +39,7 @@ const UserDetailDialog = ({ open, handleClose, mode }) => {
       //참고로 createNewUser로 만들어진 유저의 패스워드는 모두 '123456'이 된다.
     } else{
       await updateUser(selectedUser._id, selectedUser.level, userMemo, userImage);
-      // await updateUser(selectedUser._id, userLevel, userMemo, userImage);
+      // await updateUser(selectedUser._id, userLevel, userMemo, userImage);  //잠시 레벨수정기능은 보류.
     }
     setUserName(''); setUserEmail('');
     setUserImage(''); setUserMemo('');
