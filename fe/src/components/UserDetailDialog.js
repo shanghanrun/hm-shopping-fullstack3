@@ -38,7 +38,8 @@ const UserDetailDialog = ({ open, handleClose, mode }) => {
       await createNewUser(userName,userEmail,userLevel,userMemo,userImage)
       //참고로 createNewUser로 만들어진 유저의 패스워드는 모두 '123456'이 된다.
     } else{
-      await updateUser(selectedUser._id, userLevel, userMemo, userImage);
+      await updateUser(selectedUser._id, selectedUser.level, userMemo, userImage);
+      // await updateUser(selectedUser._id, userLevel, userMemo, userImage);
     }
     setUserName(''); setUserEmail('');
     setUserImage(''); setUserMemo('');
@@ -86,7 +87,7 @@ const UserDetailDialog = ({ open, handleClose, mode }) => {
         
         <Form onSubmit={submitNewInfo}>
           <Form.Group as={Col} controlId="level">
-            <Form.Label>Level</Form.Label>
+            {/* <Form.Label>Level</Form.Label>
             <Form.Select value={userLevel} onChange={handleLevelChange}>
               {LEVEL_STATUS.map((item, idx) => (
                 <option key={idx} value={item}>
@@ -94,7 +95,7 @@ const UserDetailDialog = ({ open, handleClose, mode }) => {
                 </option>
               ))}
             </Form.Select>
-          </Form.Group>
+          </Form.Group> */}
           <Form.Group as={Col} controlId="memo">
             <Form.Label>Memo</Form.Label>
             <Form.Control
