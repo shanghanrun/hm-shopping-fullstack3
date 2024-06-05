@@ -35,7 +35,7 @@ const OrderDetailDialog = ({ open, handleClose }) => {
         <p>주문날짜: {selectedOrder.updatedAt ? selectedOrder.updatedAt.slice(0, 10) : '날짜 없음'}</p>
         <p>이메일: {selectedOrder.email}</p>
         <p>
-          주소:{selectedOrder.shipTo.address + " " + selectedOrder.shipTo.city}
+          주소:{selectedOrder.shipTo.zip+" "+selectedOrder.shipTo.address + " " + selectedOrder.shipTo.address2}
         </p>
         <p>
           연락처:

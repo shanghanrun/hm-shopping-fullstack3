@@ -196,7 +196,7 @@ const PaymentPage = () => {
                 <Form.Group className="mb-3" controlId="formGridAddress2">
                   <Form.Label>주소</Form.Label>
                   <Form.Control
-                    placeholder="자동 완성시 혹시라도 주소정보가 부족하면 추가로 입력해 주세요"
+                    placeholder="'주소 검색'으로 자동 완성됩니다."
                     onChange={handleFormChange}
                     required
                     name="address"
@@ -204,17 +204,28 @@ const PaymentPage = () => {
                   />
                  
                 </Form.Group>
+                <Form.Group className="mb-3" controlId="formGridAddress2">
+                  <Form.Label>나머지 상세주소</Form.Label>
+                  <Form.Control
+                    placeholder="나머지 상세주소를 입력해 주세요"
+                    onChange={handleFormChange}
+                    required
+                    name="address2"
+                    value={shipInfo.address2}
+                  />
+                 
+                </Form.Group>
 
                 <Row className="mb-3">
-                  {/* <Form.Group as={Col} controlId="formGridCity">
+                  <Form.Group as={Col} controlId="formGridCity">
                     <Form.Label>도시</Form.Label>
                     <Form.Control
                       onChange={handleFormChange}
-                      required
+                      placeholder="선택사항입니다. 입력하고 싶으면 입력해주세요"
                       name="city"
                       value={shipInfo.city}
                     />
-                  </Form.Group> */}
+                  </Form.Group>
 
                   
                 </Row>
