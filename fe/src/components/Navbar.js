@@ -17,6 +17,7 @@ import {useSearchParams} from 'react-router-dom'
 import PriceDropdown from "./PriceDropdown";
 import CategoryDropdown from "./CategoryDropdown";
 import SizeDropdown from "./SizeDropdown";
+import SearchBox from "./SearchBox";
 
 const Navbar = ({ user }) => {
   // console.log('user 정보:',user)
@@ -89,7 +90,7 @@ const Navbar = ({ user }) => {
   
   return (
     <div>
-      {/* {showSearchBox && (
+      {showSearchBox && (
         <div className="display-space-between mobile-search-box w-100">
           <div className="search display-space-between w-100">
             <div style={{zIndex:'2'}}>
@@ -108,7 +109,7 @@ const Navbar = ({ user }) => {
             </button>
           </div>
         </div>
-      )} */}
+      )}
       <div className="side-menu" style={{ width: width }}>
         <button className="closebtn" onClick={() => setWidth(0)}>
           &times;
@@ -116,7 +117,9 @@ const Navbar = ({ user }) => {
 
         <div className="side-menu-list" id="menu-list">
           {menuList.map((menu, index) => (
-            <button key={index}>{menu}</button>
+            <li key={index}className="side-menu-item">
+              <Link to={`/${menu.toLowerCase()}`}>{(menu==='Computer')? 'Computer/가전/자동차' : menu}</Link>
+            </li>
           ))}
         </div>
       </div>
@@ -192,16 +195,22 @@ const Navbar = ({ user }) => {
           ))}
         </ul>
         {!isMobile && ( // admin페이지에서 같은 search-box스타일을 쓰고있음 그래서 여기서 서치박스 안보이는것 처리를 해줌
-          <div className="search-box landing-search-box ">
-            <FontAwesomeIcon icon={faSearch} />
-            <input
-              type="text"
-              placeholder="제품검색"
-              onKeyDown={onCheckEnter}
-              onChange={(e)=>{console.log(e.target.value); setKeyword(e.target.value)}}
-              value={keyword}
-            />
-          </div>
+          <SearchBox
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+            placeholder="제품검색"
+            field="name"
+          />
+          // <div className="search-box landing-search-box ">
+          //   <FontAwesomeIcon icon={faSearch} />
+          //   <input
+          //     type="text"
+          //     placeholder="제품검색"
+          //     onKeyDown={onCheckEnter}
+          //     onChange={(e)=>{console.log(e.target.value); setKeyword(e.target.value)}}
+          //     value={keyword}
+          //   />
+          // </div>
         )}
       </div>
     </div>
