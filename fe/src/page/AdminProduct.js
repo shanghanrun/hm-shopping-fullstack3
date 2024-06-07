@@ -17,6 +17,7 @@ const AdminProduct = () => {
   const navigate = useNavigate();
   const [showDialog, setShowDialog] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
+  const {showToastMessage} = uiStore()
 
 
   const [searchQuery, setSearchQuery] = useState({
@@ -83,8 +84,12 @@ const AdminProduct = () => {
   };
   const handleUpload = async () => {
     if (!selectedFile) {
-      console.error("파일을 선택해주세요.");
+      showToastMessage("파일을 선택해주세요.", 'error');
       return;
+    }
+    // if (!selectedFile.split(".").includes('xslx')){
+    if (!selectedFile.endsWith('.xslx')){
+      showToastMessage('올바른 형식의 파일을 사용하세요.','error')
     }
     console.log('selectedFile :', selectedFile)
 

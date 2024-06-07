@@ -4,7 +4,7 @@ import Table from "react-bootstrap/Table";
 import { currencyFormat } from "../utils/number";
 import api from './../utils/api';
 
-const UserTable = ({ header, userList, orderList, openEditForm }) => {
+const UserTable = ({ header, userList, orderList, openEditUser }) => {
   // const [userOrders, setUserOrders] = useState({});
 
   // useEffect(() => {
@@ -50,7 +50,7 @@ const UserTable = ({ header, userList, orderList, openEditForm }) => {
                   <th>{currencyFormat(user.purchase)}</th>
                   <th>
                     <p>{user.memo}</p>
-                    <Button size="sm" onClick={() => openEditForm(user)}>
+                    <Button size="sm" onClick={() => openEditUser(user)}>
                       Edit
                     </Button>
                   </th>

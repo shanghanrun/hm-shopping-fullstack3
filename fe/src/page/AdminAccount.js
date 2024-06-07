@@ -11,6 +11,7 @@ import SearchBox2 from "../components/SearchBox2.js";
 const AdminAccount = () => {
     const {userList, getUserList, setSelectedUser, totalUserCount, batchCreateUsers, userUpdated } = userStore()
     console.log('admin account의 userList :', userList)
+    const {showToastMessage} = uiStore()
   const {getAllUserOrderList, orderList} = orderStore()
   const navigate = useNavigate();
   const [showDialog, setShowDialog] = useState(false);
@@ -71,10 +72,13 @@ const AdminAccount = () => {
   };
   const handleUpload = async () => {
     if (!selectedFile) {
-      console.error("파일을 선택해주세요.");
+      showToastMessage("파일을 선택해주세요.", 'error');
       return;
     }
-    console.log('selectedFile :', selectedFile)
+    // if (!selectedFile.split(".").includes('xslx')){
+    if (!selectedFile.endsWith('.xslx')){
+      showToastMessage('올바른 형식의 파일을 사용하세요.','error')
+    }
 
     const formData = new FormData();
     console.log('selectedFile :', selectedFile)
@@ -113,7 +117,7 @@ const AdminAccount = () => {
           header={tableHeader}
           userList={userList}
           orderList={orderList}
-          openEditForm={openEditUser}
+          openEditUser={openEditUser}
         />
         
       </Container>
