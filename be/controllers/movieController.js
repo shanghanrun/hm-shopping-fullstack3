@@ -6,7 +6,8 @@ const movieController={}
 movieController.createUserMovie = async(req,res)=>{
 	try{
 		const {userId,title, seat,image} = req.body;
-		let movie = await Movie.findOne({title},{userId})
+		// let movie = await Movie.findOne({title},{userId}) 잘못된 명령
+		let movie = await Movie.findOne({title,userId})
 		if(movie){
 			throw new Error('이미 존재합니다')
 		}
