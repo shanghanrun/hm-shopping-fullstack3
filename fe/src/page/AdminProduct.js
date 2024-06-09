@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Container, Button } from "react-bootstrap";
+import { Container, Button, Modal } from "react-bootstrap";
 import SearchBox from "../components/SearchBox";
 import productStore from '../store/productStore'
 import uiStore from '../store/uiStore'
@@ -19,6 +19,8 @@ const AdminProduct = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const {showToastMessage} = uiStore()
 
+  const [showDeleteModal, setShowDeleteModal] = useState(false)
+  const [productIdToDelete, setProductIdToDelete] = useState(null)
 
   const [searchQuery, setSearchQuery] = useState({
     page: 1,name: ""})
@@ -34,6 +36,36 @@ const AdminProduct = () => {
     "Status",
     "",
   ];
+
+  const DeleteConfirmModal =({show, handleClose, handleConfirm})=>{
+    <Modal show={show} onHide={handleClose}>
+      <Modal.Header closeButton>
+        <Modal.Title>삭제 확인</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>정말로 삭제하시겠습니까?</Modal.Body>
+      <Modal.Footer>
+        <Button variant="secondary" onClick={handleClose}>
+          취소
+        </Button>
+        <Button variant="danger" onClick={handleConfirm}>예</Button>
+      </Modal.Footer>
+    </Modal>
+  }
+
+  const openDeleteModal =(id)=>{
+    setProductIdToDelete(id);
+    setShowDeleteModal(true)
+  }
+  const closeDeleteModal=()=>{
+    setProductIdToDelete(null)
+    setShowDeleteModal(false)
+  }
+  const confirmDelete= async()=>{
+    if(productIdToDelete){
+      await deleteProduct(productIdToDelete, navigate);
+      closeDeleteModal();
+    }
+  }
 
   useEffect(()=>{
     getAllUserOrderList() //order 페이지를 위해 미리 데이터를 로딩해 둔다.
@@ -51,10 +83,13 @@ const AdminProduct = () => {
   },[searchQuery, selectedProduct, productUpdated])
 
 
-  const deleteItem = async (id) => {
-    //아이템 삭제하가ㅣ
-    await deleteProduct(id, navigate)
-  };
+  // const deleteItem = async (id) => {
+  //   //아이템 삭제하가ㅣ
+  //   const confirmed = window.confirm("정말로 삭제하시겠습니까?")
+  //   if(confirmed){
+  //     await deleteProduct(id, navigate)
+  //   }
+  // };
 
   const openEditForm = (product) => {
     //edit모드로 설정하고
@@ -132,7 +167,8 @@ const AdminProduct = () => {
         <ProductTable
           header={tableHeader}
           data={productList}
-          deleteItem={deleteItem}
+          // deleteItem={deleteItem}
+          deleteItem={openDeleteModal}
           openEditForm={openEditForm}
         />
         <ReactPaginate
@@ -162,6 +198,12 @@ const AdminProduct = () => {
         showDialog={showDialog}
         setShowDialog={setShowDialog}
         />
+
+      <DeleteConfirmModal 
+        show={showDeleteModal}
+        handleClose={closeDeleteModal}
+        handleConfirm={confirmDelete}
+      />
     </div>
   );
 };
