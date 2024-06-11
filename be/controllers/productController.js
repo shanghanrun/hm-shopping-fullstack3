@@ -198,15 +198,23 @@ productController.checkStock=async(item)=>{
 	// 충분하다면, 재고에서 -qty. 성공
 	if(product.stock[item.size] < item.qty){
 		return {isVerify:false, message: `${product.name}의 ${item.size} 재고가 부족합니다. \n현재 ${product.stock[item.size]}개 재고가 있습니다.`}
+	} else{
+		// const newStock = {...product.stock} 
+		// // 모양  { s:5, m:2 }  
+		// newStock[item.size] -= item.qty
+		// product.stock = newStock 
+		// await product.save()
+		return {isVerify: true}
 	}
-	const newStock = {...product.stock} 
-	// 모양  { s:5, m:2 }  
-	newStock[item.size] -= item.qty
-	product.stock = newStock 
-	await product.save()
-	return {isVerify: true}
 }
 
+productController.processStock=async(item)=>{
+	const product = await Product.findById(item.productId)
+	const newStock = {...product.stock}
+	newStock[item.size] -= item.qty
+	product.stock = newStock
+	await product.save()
+}
 productController.checkItemsStock= async (items)=>{
 	const insufficientStockItems =[]
 	await Promise.all(
@@ -214,10 +222,10 @@ productController.checkItemsStock= async (items)=>{
 			const stockCheck = await productController.checkStock(item)
 			if(!stockCheck.isVerify){
 				insufficientStockItems.push({item, message:stockCheck.message})
-			}
-			return
+			} 
 		})
 	)
+	if (insufficientStockItems.length === 0) await productController.processStock(item)
 	return insufficientStockItems;
 }
 
