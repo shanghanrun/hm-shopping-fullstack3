@@ -4,7 +4,7 @@ import { Container, Row, Col } from "react-bootstrap";
 import cartStore from '../store/cartStore'
 import userStore from '../store/userStore'
 import CartProductCard from "../components/CartProductCard";
-import OrderReceipt from "../components/OrderReceipt";
+import CartOrderReceipt from "../components/CartOrderReceipt";
 import "../style/cart.style.css";
 
 const CartPage = () => {
@@ -37,7 +37,7 @@ const CartPage = () => {
           </div>
         </Col>
         <Col xs={12} md={5}>
-          <OrderReceipt items={cart?.items || []}
+          <CartOrderReceipt items={cart?.items || []}
             user={user}
           />
         </Col>

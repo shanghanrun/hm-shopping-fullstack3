@@ -8,7 +8,7 @@ import uiStore from '../store/uiStore'
 import orderStore from '../store/orderStore'
 import userStore from '../store/userStore'
 
-const OrderReceipt = ({items, user}) => {
+const CartOrderReceipt = ({items, user}) => {
   const {setLeftCred, setLeftCoup, setLTotal, setCredPlus} =userStore()
   console.log('user, credit, coupon :', user, ':', user?.credit, ':', user?.coupon)
   const {showToastMessage} = uiStore()
@@ -140,4 +140,4 @@ const OrderReceipt = ({items, user}) => {
   );
 };
 
-export default OrderReceipt;
+export default CartOrderReceipt;
