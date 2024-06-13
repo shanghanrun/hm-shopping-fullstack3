@@ -52,6 +52,7 @@ orderController.createOrder = async(req, res)=>{
 
 
 orderController.getOrderList=async(req, res)=>{
+	const PAGE_SIZE =10
 	try{
 		const {page, orderNum} = req.query
 		const userId =  req.userId
