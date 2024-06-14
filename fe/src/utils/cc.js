@@ -1,9 +1,5 @@
 const cc = (variable, str = '') => {
-  if (str) {
-    console.log(`${str} ${variable} :`, variable);
-  } else {
-    console.log(`${variable} :`, variable);
-  }
+    console.log(`${str} :`, variable);
 };
 
 export default cc;
