@@ -80,7 +80,7 @@ const Login = () => {
                   console.log('Login Failed');
                 }}
                 useOneTap
-              />;
+              />
             </div>
           </div>
         </Form>

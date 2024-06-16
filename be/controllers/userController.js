@@ -72,7 +72,8 @@ userController.loginWithEmail= async(req, res)=>{
 
 userController.loginWithGoogle= async(req, res)=>{
 	try{
-		//토큰값을 읽어온다.
+		//토큰값을 읽어온다. 그런데 여기서 token이라고 하는 것은 googleLogin에서 자체적으로 발행한 credential을 포함한 googleData이다. 
+		// 그래서 이것은 나중에 발행하는 token과 다른 것이다.
 		const {token} = req.body
 		const googleClient = new OAuth2Client(GOOGLE_CLIENT_ID)
 		const tokenInfo = await googleClient.verifyIdToken({
