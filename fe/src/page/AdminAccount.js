@@ -7,8 +7,8 @@ import UserTable from "../components/UserTable";
 import orderStore from '../store/orderStore'
 import UserDetailDialog from "../components/UserDetailDialog";
 import SearchBox2 from "../components/SearchBox2.js";
-import ProductsToCsv from "../components/ProductsToCsv";
-import ProductCsv2Db from "../components/ProductCsv2Db";
+import ProductsToJson from "../components/ProductsToJson.js";
+import ProductJson2Db from "../components/ProductJson2Db.js";
 
 const AdminAccount = () => {
     const {userList, getUserList, setSelectedUser, totalUserCount, batchCreateUsers, userUpdated } = userStore()
@@ -111,8 +111,8 @@ const AdminAccount = () => {
         <Button className="mt-2 mb-2" onClick={handleClickNewUser}>
           Add New User +
         </Button>
-        <ProductsToCsv />
-        <ProductCsv2Db />
+        <ProductsToJson />
+        <ProductJson2Db />
 
         <div>
           <h5>Total User: {totalUserCount} 명</h5>
